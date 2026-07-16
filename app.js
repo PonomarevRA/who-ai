@@ -1,0 +1,465 @@
+(() => {
+  // src/mcp/animalIdentity.js
+  var species = [
+    ["\u043B\u0438\u0441\u0438\u0446\u0430", "land"],
+    ["\u0432\u043E\u043B\u043A", "land"],
+    ["\u0440\u044B\u0441\u044C", "land"],
+    ["\u043C\u0435\u0434\u0432\u0435\u0434\u044C", "big"],
+    ["\u0435\u043D\u043E\u0442", "land"],
+    ["\u0432\u044B\u0434\u0440\u0430", "sea"],
+    ["\u0431\u043E\u0431\u0440", "land"],
+    ["\u0431\u0430\u0440\u0441\u0443\u043A", "land"],
+    ["\u043A\u0443\u043D\u0438\u0446\u0430", "land"],
+    ["\u0441\u043E\u0431\u043E\u043B\u044C", "land"],
+    ["\u0440\u043E\u0441\u043E\u043C\u0430\u0445\u0430", "big"],
+    ["\u043B\u0430\u0441\u043A\u0430", "land"],
+    ["\u0445\u043E\u0440\u0451\u043A", "land"],
+    ["\u043D\u043E\u0440\u043A\u0430", "sea"],
+    ["\u0441\u043A\u0443\u043D\u0441", "land"],
+    ["\u043F\u0430\u043D\u0434\u0430", "big"],
+    ["\u043A\u043E\u0430\u043B\u0430", "land"],
+    ["\u0432\u043E\u043C\u0431\u0430\u0442", "land"],
+    ["\u043A\u0435\u043D\u0433\u0443\u0440\u0443", "land"],
+    ["\u0432\u0430\u043B\u043B\u0430\u0431\u0438", "land"],
+    ["\u043A\u0432\u043E\u043A\u043A\u0430", "land"],
+    ["\u043A\u0430\u043F\u0438\u0431\u0430\u0440\u0430", "land"],
+    ["\u0448\u0438\u043D\u0448\u0438\u043B\u043B\u0430", "land"],
+    ["\u043A\u0440\u043E\u043B\u0438\u043A", "land"],
+    ["\u0437\u0430\u044F\u0446", "land"],
+    ["\u0431\u0435\u043B\u043A\u0430", "land"],
+    ["\u0431\u0443\u0440\u0443\u043D\u0434\u0443\u043A", "land"],
+    ["\u0441\u0443\u0440\u043E\u043A", "land"],
+    ["\u0451\u0436", "spiky"],
+    ["\u043B\u0435\u0442\u0443\u0447\u0430\u044F \u043C\u044B\u0448\u044C", "bird"],
+    ["\u043B\u0435\u043D\u0438\u0432\u0435\u0446", "land"],
+    ["\u043C\u0443\u0440\u0430\u0432\u044C\u0435\u0434", "land"],
+    ["\u0431\u0440\u043E\u043D\u0435\u043D\u043E\u0441\u0435\u0446", "spiky"],
+    ["\u0442\u0430\u043F\u0438\u0440", "big"],
+    ["\u0436\u0438\u0440\u0430\u0444", "big"],
+    ["\u0437\u0435\u0431\u0440\u0430", "big"],
+    ["\u0441\u043B\u043E\u043D", "big"],
+    ["\u043D\u043E\u0441\u043E\u0440\u043E\u0433", "big"],
+    ["\u0431\u0435\u0433\u0435\u043C\u043E\u0442", "big"],
+    ["\u0432\u0435\u0440\u0431\u043B\u044E\u0434", "big"],
+    ["\u043B\u0430\u043C\u0430", "big"],
+    ["\u0430\u043B\u044C\u043F\u0430\u043A\u0430", "big"],
+    ["\u044F\u043A", "big"],
+    ["\u043E\u043B\u0435\u043D\u044C", "big"],
+    ["\u043B\u043E\u0441\u044C", "big"],
+    ["\u0431\u0438\u0437\u043E\u043D", "big"],
+    ["\u0442\u0438\u0433\u0440", "big"],
+    ["\u043B\u0435\u0432", "big"],
+    ["\u0433\u0435\u043F\u0430\u0440\u0434", "big"],
+    ["\u043B\u0435\u043E\u043F\u0430\u0440\u0434", "big"],
+    ["\u0442\u044E\u043B\u0435\u043D\u044C", "sea"],
+    ["\u0434\u0435\u043B\u044C\u0444\u0438\u043D", "sea"],
+    ["\u043A\u043E\u0441\u0430\u0442\u043A\u0430", "sea"],
+    ["\u0431\u0435\u043B\u0443\u0445\u0430", "sea"],
+    ["\u043D\u0430\u0440\u0432\u0430\u043B", "sea"],
+    ["\u043A\u0438\u0442", "sea"],
+    ["\u0430\u043A\u0443\u043B\u0430", "sea"],
+    ["\u043E\u0441\u044C\u043C\u0438\u043D\u043E\u0433", "sea"],
+    ["\u043A\u0430\u043B\u044C\u043C\u0430\u0440", "sea"],
+    ["\u043A\u0440\u0430\u0431", "sea"],
+    ["\u043C\u043E\u0440\u0441\u043A\u043E\u0439 \u043A\u043E\u043D\u0451\u043A", "sea"],
+    ["\u0447\u0435\u0440\u0435\u043F\u0430\u0445\u0430", "reptile"],
+    ["\u043B\u044F\u0433\u0443\u0448\u043A\u0430", "reptile"],
+    ["\u0430\u043A\u0441\u043E\u043B\u043E\u0442\u043B\u044C", "reptile"],
+    ["\u0433\u0435\u043A\u043A\u043E\u043D", "reptile"],
+    ["\u0445\u0430\u043C\u0435\u043B\u0435\u043E\u043D", "reptile"],
+    ["\u043A\u0440\u043E\u043A\u043E\u0434\u0438\u043B", "reptile"],
+    ["\u0437\u043C\u0435\u044F", "reptile"],
+    ["\u0441\u043E\u0432\u0430", "bird"],
+    ["\u043E\u0440\u0451\u043B", "bird"],
+    ["\u0441\u043E\u043A\u043E\u043B", "bird"],
+    ["\u043F\u043E\u043F\u0443\u0433\u0430\u0439", "bird"],
+    ["\u043F\u0438\u043D\u0433\u0432\u0438\u043D", "bird"],
+    ["\u0444\u043B\u0430\u043C\u0438\u043D\u0433\u043E", "bird"],
+    ["\u043F\u0430\u0432\u043B\u0438\u043D", "bird"]
+  ];
+  var realms = [
+    { label: "\u0438\u0437 \u043B\u0435\u0441\u0430", scene: "forest" },
+    { label: "\u0438\u0437 \u0442\u0443\u043C\u0430\u043D\u0430", scene: "mist" },
+    { label: "\u0438\u0437 \u0441\u043E\u0437\u0432\u0435\u0437\u0434\u0438\u0439", scene: "cosmos" },
+    { label: "\u0438\u0437 \u043C\u043E\u0440\u0441\u043A\u043E\u0439 \u043F\u0435\u043D\u044B", scene: "water" }
+  ];
+  var iconTypeBySpecies = {
+    "\u043B\u0438\u0441\u0438\u0446\u0430": "canine",
+    "\u0432\u043E\u043B\u043A": "canine",
+    "\u0440\u044B\u0441\u044C": "feline",
+    "\u043C\u0435\u0434\u0432\u0435\u0434\u044C": "bear",
+    "\u0435\u043D\u043E\u0442": "raccoon",
+    "\u0432\u044B\u0434\u0440\u0430": "otter",
+    "\u0431\u043E\u0431\u0440": "beaver",
+    "\u0431\u0430\u0440\u0441\u0443\u043A": "mustelid",
+    "\u043A\u0443\u043D\u0438\u0446\u0430": "mustelid",
+    "\u0441\u043E\u0431\u043E\u043B\u044C": "mustelid",
+    "\u0440\u043E\u0441\u043E\u043C\u0430\u0445\u0430": "mustelid",
+    "\u043B\u0430\u0441\u043A\u0430": "mustelid",
+    "\u0445\u043E\u0440\u0451\u043A": "mustelid",
+    "\u043D\u043E\u0440\u043A\u0430": "otter",
+    "\u0441\u043A\u0443\u043D\u0441": "skunk",
+    "\u043F\u0430\u043D\u0434\u0430": "panda",
+    "\u043A\u043E\u0430\u043B\u0430": "koala",
+    "\u0432\u043E\u043C\u0431\u0430\u0442": "marsupial",
+    "\u043A\u0435\u043D\u0433\u0443\u0440\u0443": "marsupial",
+    "\u0432\u0430\u043B\u043B\u0430\u0431\u0438": "marsupial",
+    "\u043A\u0432\u043E\u043A\u043A\u0430": "marsupial",
+    "\u043A\u0430\u043F\u0438\u0431\u0430\u0440\u0430": "rodent",
+    "\u0448\u0438\u043D\u0448\u0438\u043B\u043B\u0430": "rodent",
+    "\u043A\u0440\u043E\u043B\u0438\u043A": "rabbit",
+    "\u0437\u0430\u044F\u0446": "rabbit",
+    "\u0431\u0435\u043B\u043A\u0430": "rodent",
+    "\u0431\u0443\u0440\u0443\u043D\u0434\u0443\u043A": "rodent",
+    "\u0441\u0443\u0440\u043E\u043A": "rodent",
+    "\u0451\u0436": "hedgehog",
+    "\u043B\u0435\u0442\u0443\u0447\u0430\u044F \u043C\u044B\u0448\u044C": "bat",
+    "\u043B\u0435\u043D\u0438\u0432\u0435\u0446": "sloth",
+    "\u043C\u0443\u0440\u0430\u0432\u044C\u0435\u0434": "anteater",
+    "\u0431\u0440\u043E\u043D\u0435\u043D\u043E\u0441\u0435\u0446": "armadillo",
+    "\u0442\u0430\u043F\u0438\u0440": "hoofed",
+    "\u0436\u0438\u0440\u0430\u0444": "giraffe",
+    "\u0437\u0435\u0431\u0440\u0430": "zebra",
+    "\u0441\u043B\u043E\u043D": "elephant",
+    "\u043D\u043E\u0441\u043E\u0440\u043E\u0433": "rhino",
+    "\u0431\u0435\u0433\u0435\u043C\u043E\u0442": "hippo",
+    "\u0432\u0435\u0440\u0431\u043B\u044E\u0434": "camel",
+    "\u043B\u0430\u043C\u0430": "camelid",
+    "\u0430\u043B\u044C\u043F\u0430\u043A\u0430": "camelid",
+    "\u044F\u043A": "bovine",
+    "\u043E\u043B\u0435\u043D\u044C": "deer",
+    "\u043B\u043E\u0441\u044C": "deer",
+    "\u0431\u0438\u0437\u043E\u043D": "bovine",
+    "\u0442\u0438\u0433\u0440": "bigcat",
+    "\u043B\u0435\u0432": "lion",
+    "\u0433\u0435\u043F\u0430\u0440\u0434": "bigcat",
+    "\u043B\u0435\u043E\u043F\u0430\u0440\u0434": "bigcat",
+    "\u0442\u044E\u043B\u0435\u043D\u044C": "pinniped",
+    "\u0434\u0435\u043B\u044C\u0444\u0438\u043D": "cetacean",
+    "\u043A\u043E\u0441\u0430\u0442\u043A\u0430": "cetacean",
+    "\u0431\u0435\u043B\u0443\u0445\u0430": "cetacean",
+    "\u043D\u0430\u0440\u0432\u0430\u043B": "narwhal",
+    "\u043A\u0438\u0442": "cetacean",
+    "\u0430\u043A\u0443\u043B\u0430": "shark",
+    "\u043E\u0441\u044C\u043C\u0438\u043D\u043E\u0433": "octopus",
+    "\u043A\u0430\u043B\u044C\u043C\u0430\u0440": "cephalopod",
+    "\u043A\u0440\u0430\u0431": "crab",
+    "\u043C\u043E\u0440\u0441\u043A\u043E\u0439 \u043A\u043E\u043D\u0451\u043A": "seahorse",
+    "\u0447\u0435\u0440\u0435\u043F\u0430\u0445\u0430": "turtle",
+    "\u043B\u044F\u0433\u0443\u0448\u043A\u0430": "frog",
+    "\u0430\u043A\u0441\u043E\u043B\u043E\u0442\u043B\u044C": "axolotl",
+    "\u0433\u0435\u043A\u043A\u043E\u043D": "lizard",
+    "\u0445\u0430\u043C\u0435\u043B\u0435\u043E\u043D": "chameleon",
+    "\u043A\u0440\u043E\u043A\u043E\u0434\u0438\u043B": "croc",
+    "\u0437\u043C\u0435\u044F": "snake",
+    "\u0441\u043E\u0432\u0430": "owl",
+    "\u043E\u0440\u0451\u043B": "raptor",
+    "\u0441\u043E\u043A\u043E\u043B": "raptor",
+    "\u043F\u043E\u043F\u0443\u0433\u0430\u0439": "parrot",
+    "\u043F\u0438\u043D\u0433\u0432\u0438\u043D": "penguin",
+    "\u0444\u043B\u0430\u043C\u0438\u043D\u0433\u043E": "flamingo",
+    "\u043F\u0430\u0432\u043B\u0438\u043D": "peacock"
+  };
+  var sceneForAnimal = (kind, realmScene) => {
+    if (realmScene === "cosmos" || realmScene === "mist") return realmScene;
+    if (kind === "sea") return "water";
+    if (kind === "bird") return realmScene === "water" ? "water" : "forest";
+    if (kind === "reptile") return realmScene === "water" ? "water" : "forest";
+    return realmScene === "water" ? "water" : "forest";
+  };
+  var baseColors = [["\u0430\u043B\u044B\u0439", 4], ["\u043A\u043E\u0440\u0430\u043B\u043B\u043E\u0432\u044B\u0439", 12], ["\u043F\u0435\u0440\u0441\u0438\u043A\u043E\u0432\u044B\u0439", 24], ["\u044F\u043D\u0442\u0430\u0440\u043D\u044B\u0439", 38], ["\u043B\u0438\u043C\u043E\u043D\u043D\u044B\u0439", 53], ["\u043E\u043B\u0438\u0432\u043A\u043E\u0432\u044B\u0439", 73], ["\u043C\u044F\u0442\u043D\u044B\u0439", 145], ["\u0438\u0437\u0443\u043C\u0440\u0443\u0434\u043D\u044B\u0439", 160], ["\u0431\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439", 178], ["\u043B\u0430\u0437\u0443\u0440\u043D\u044B\u0439", 195], ["\u043D\u0435\u0431\u0435\u0441\u043D\u044B\u0439", 208], ["\u0441\u0430\u043F\u0444\u0438\u0440\u043E\u0432\u044B\u0439", 222], ["\u0438\u043D\u0434\u0438\u0433\u043E", 240], ["\u0430\u043C\u0435\u0442\u0438\u0441\u0442\u043E\u0432\u044B\u0439", 266], ["\u0441\u0438\u0440\u0435\u043D\u0435\u0432\u044B\u0439", 280], ["\u043B\u0430\u0432\u0430\u043D\u0434\u043E\u0432\u044B\u0439", 292], ["\u043C\u0430\u043B\u0438\u043D\u043E\u0432\u044B\u0439", 330], ["\u0440\u043E\u0437\u043E\u0432\u044B\u0439", 344], ["\u043F\u0443\u0434\u0440\u043E\u0432\u044B\u0439", 355], ["\u0448\u043E\u043A\u043E\u043B\u0430\u0434\u043D\u044B\u0439", 24], ["\u043F\u0435\u0441\u043E\u0447\u043D\u044B\u0439", 42], ["\u043A\u0430\u0440\u0430\u043C\u0435\u043B\u044C\u043D\u044B\u0439", 31], ["\u0434\u044B\u043C\u0447\u0430\u0442\u044B\u0439", 220], ["\u0433\u0440\u0430\u0444\u0438\u0442\u043E\u0432\u044B\u0439", 230], ["\u0441\u0435\u0440\u0435\u0431\u0440\u044F\u043D\u044B\u0439", 210], ["\u0437\u043E\u043B\u043E\u0442\u043E\u0439", 45], ["\u043C\u0435\u0434\u043D\u044B\u0439", 18], ["\u043A\u043E\u0444\u0435\u0439\u043D\u044B\u0439", 29], ["\u043D\u0435\u0444\u0440\u0438\u0442\u043E\u0432\u044B\u0439", 155], ["\u0430\u0440\u043A\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439", 190]];
+  var colorMoods = ["\u0441\u0432\u0435\u0442\u043B\u044B\u0439", "\u0438\u0441\u043A\u0440\u044F\u0449\u0438\u0439\u0441\u044F", "\u0442\u0443\u043C\u0430\u043D\u043D\u044B\u0439", "\u043B\u0443\u043D\u043D\u044B\u0439", "\u0441\u043E\u0447\u043D\u044B\u0439", "\u0431\u0430\u0440\u0445\u0430\u0442\u043D\u044B\u0439", "\u0443\u0442\u0440\u0435\u043D\u043D\u0438\u0439", "\u0433\u043B\u0443\u0431\u043E\u043A\u0438\u0439", "\u043D\u0435\u043E\u043D\u043E\u0432\u044B\u0439", "\u0442\u0438\u0445\u0438\u0439"];
+  var adjectiveRoots = ["\u0438\u0441\u043A\u0440\u0438\u0441\u0442\u044B\u0439", "\u043D\u0435\u0436\u043D\u044B\u0439", "\u0441\u043C\u0435\u043B\u044B\u0439", "\u043C\u0435\u0447\u0442\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0439", "\u043B\u043E\u0432\u043A\u0438\u0439", "\u043B\u0435\u0433\u0435\u043D\u0434\u0430\u0440\u043D\u044B\u0439", "\u0441\u043E\u043B\u043D\u0435\u0447\u043D\u044B\u0439", "\u0431\u0430\u0440\u0445\u0430\u0442\u043D\u044B\u0439", "\u0448\u0443\u0441\u0442\u0440\u044B\u0439", "\u0434\u043E\u0431\u0440\u044B\u0439", "\u0432\u043D\u0438\u043C\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u0439", "\u0438\u0433\u0440\u0438\u0432\u044B\u0439", "\u0441\u0432\u043E\u0431\u043E\u0434\u043D\u044B\u0439", "\u0443\u044E\u0442\u043D\u044B\u0439", "\u0437\u0430\u0434\u043E\u0440\u043D\u044B\u0439", "\u043C\u0443\u0434\u0440\u044B\u0439", "\u0441\u0447\u0430\u0441\u0442\u043B\u0438\u0432\u044B\u0439", "\u043F\u0443\u0448\u0438\u0441\u0442\u044B\u0439", "\u043E\u0442\u0432\u0430\u0436\u043D\u044B\u0439", "\u0441\u043F\u043E\u043A\u043E\u0439\u043D\u044B\u0439", "\u0441\u0432\u0435\u0442\u043B\u044B\u0439", "\u0431\u044B\u0441\u0442\u0440\u044B\u0439", "\u0432\u043E\u043B\u0448\u0435\u0431\u043D\u044B\u0439", "\u0442\u0451\u043F\u043B\u044B\u0439", "\u0437\u0432\u043E\u043D\u043A\u0438\u0439", "\u044F\u0440\u043A\u0438\u0439", "\u0447\u0443\u0442\u043A\u0438\u0439", "\u0432\u0435\u0441\u0451\u043B\u044B\u0439", "\u0442\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439", "\u043D\u0435\u043E\u0431\u044B\u043A\u043D\u043E\u0432\u0435\u043D\u043D\u044B\u0439"];
+  var intensifiers = ["\u043F\u043E-\u043D\u0430\u0441\u0442\u043E\u044F\u0449\u0435\u043C\u0443", "\u0441\u043B\u0435\u0433\u043A\u0430", "\u043E\u0441\u043E\u0431\u0435\u043D\u043D\u043E", "\u0431\u0435\u0437\u0443\u043C\u043D\u043E", "\u043D\u0435\u0432\u0435\u0440\u043E\u044F\u0442\u043D\u043E", "\u0442\u0438\u0445\u043E", "\u043E\u0447\u0435\u043D\u044C", "\u043F\u043E-\u0434\u043E\u0431\u0440\u043E\u043C\u0443", "\u0438\u0441\u043A\u0440\u0435\u043D\u043D\u0435", "\u0431\u0435\u0441\u043A\u043E\u043D\u0435\u0447\u043D\u043E"];
+  var verbs = ["\u043D\u0430\u0445\u043E\u0434\u0438\u0442", "\u043F\u043E\u0434\u0441\u0432\u0435\u0447\u0438\u0432\u0430\u0435\u0442", "\u0431\u0435\u0440\u0435\u0433\u0451\u0442", "\u0437\u0430\u043F\u0443\u0441\u043A\u0430\u0435\u0442", "\u0441\u043E\u0431\u0438\u0440\u0430\u0435\u0442", "\u043F\u0440\u0435\u0432\u0440\u0430\u0449\u0430\u0435\u0442", "\u0437\u0430\u043C\u0435\u0447\u0430\u0435\u0442", "\u0440\u0438\u0441\u0443\u0435\u0442", "\u043E\u0431\u043D\u0438\u043C\u0430\u0435\u0442", "\u043F\u0440\u0438\u0434\u0443\u043C\u044B\u0432\u0430\u0435\u0442", "\u0434\u0430\u0440\u0438\u0442", "\u043B\u043E\u0432\u0438\u0442", "\u0443\u0441\u0438\u043B\u0438\u0432\u0430\u0435\u0442", "\u043E\u0442\u043A\u0440\u044B\u0432\u0430\u0435\u0442", "\u0441\u043E\u0437\u0434\u0430\u0451\u0442"];
+  var themes = ["\u0440\u0430\u0434\u043E\u0441\u0442\u044C", "\u043C\u0430\u043B\u0435\u043D\u044C\u043A\u0438\u0435 \u0447\u0443\u0434\u0435\u0441\u0430", "\u0441\u0432\u0435\u0442\u043B\u044B\u0435 \u0441\u043E\u0432\u043F\u0430\u0434\u0435\u043D\u0438\u044F", "\u0443\u043B\u044B\u0431\u043A\u0438", "\u0432\u043D\u0443\u0442\u0440\u0435\u043D\u043D\u0438\u0439 \u0440\u0438\u0442\u043C", "\u043D\u043E\u0432\u044B\u0435 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u044B", "\u0432\u0434\u043E\u0445\u043D\u043E\u0432\u0435\u043D\u0438\u0435", "\u0441\u043C\u0435\u043B\u044B\u0435 \u043C\u044B\u0441\u043B\u0438", "\u0443\u044E\u0442\u043D\u044B\u0435 \u0438\u0441\u0442\u043E\u0440\u0438\u0438", "\u043F\u0440\u0430\u0437\u0434\u043D\u0438\u0447\u043D\u044B\u0439 \u043D\u0430\u0441\u0442\u0440\u043E\u0439", "\u0438\u0441\u043A\u0440\u044B", "\u043C\u044F\u0433\u043A\u0438\u0439 \u0441\u0432\u0435\u0442", "\u0438\u0433\u0440\u0443", "\u0433\u0430\u0440\u043C\u043E\u043D\u0438\u044E", "\u0443\u0434\u0430\u0447\u043D\u044B\u0435 \u043F\u0440\u0438\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u044F", "\u0441\u0432\u043E\u0439 \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440", "\u0442\u0435\u043F\u043B\u043E", "\u0445\u043E\u0440\u043E\u0448\u0438\u0435 \u043D\u043E\u0432\u043E\u0441\u0442\u0438", "\u0432\u043E\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435", "\u0441\u0432\u043E\u0431\u043E\u0434\u0443"];
+  var dailyForecasts = [
+    "\u041B\u0451\u0433\u043A\u0438\u043C \u0438 \u043B\u044E\u0431\u043E\u043F\u044B\u0442\u043D\u044B\u043C: \u043E\u0434\u043D\u043E \u043D\u0435\u0431\u043E\u043B\u044C\u0448\u043E\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0437\u0430\u043F\u0443\u0441\u0442\u0438\u0442 \u043F\u0440\u0438\u044F\u0442\u043D\u0443\u044E \u0446\u0435\u043F\u043E\u0447\u043A\u0443.",
+    "\u0412\u043D\u0438\u043C\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u043C \u043A \u0434\u0435\u0442\u0430\u043B\u044F\u043C: \u0443\u0434\u0430\u0447\u043D\u0430\u044F \u043F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0430 \u043E\u043A\u0430\u0436\u0435\u0442\u0441\u044F \u0441\u043E\u0432\u0441\u0435\u043C \u0440\u044F\u0434\u043E\u043C.",
+    "\u0414\u0440\u0443\u0436\u0435\u0441\u043A\u0438\u043C: \u0441\u043C\u0435\u043B\u043E \u043D\u0430\u043F\u0438\u0448\u0438 \u0447\u0435\u043B\u043E\u0432\u0435\u043A\u0443, \u043E \u043A\u043E\u0442\u043E\u0440\u043E\u043C \u0441\u0435\u0433\u043E\u0434\u043D\u044F \u043F\u043E\u0434\u0443\u043C\u0430\u043B(\u0430).",
+    "\u0421\u043C\u0435\u043B\u044B\u043C: \u043C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F \u0440\u0435\u0448\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u043F\u0440\u0438\u043D\u0435\u0441\u0451\u0442 \u0431\u043E\u043B\u044C\u0448\u043E\u0439 \u0432\u043D\u0443\u0442\u0440\u0435\u043D\u043D\u0438\u0439 \u043F\u043B\u044E\u0441.",
+    "\u042F\u0441\u043D\u044B\u043C: \u0432\u044B\u0431\u0435\u0440\u0438 \u0433\u043B\u0430\u0432\u043D\u043E\u0435 \u0438 \u0441\u043F\u043E\u043A\u043E\u0439\u043D\u043E \u043E\u0442\u043F\u0443\u0441\u0442\u0438 \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u043E\u0435.",
+    "\u0418\u0437\u043E\u0431\u0440\u0435\u0442\u0430\u0442\u0435\u043B\u044C\u043D\u044B\u043C: \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u0430\u044F \u0438\u0434\u0435\u044F \u043E\u043A\u0430\u0436\u0435\u0442\u0441\u044F \u043F\u043E\u043B\u0435\u0437\u043D\u0435\u0435, \u0447\u0435\u043C \u043A\u0430\u0436\u0435\u0442\u0441\u044F.",
+    "\u0421\u0447\u0430\u0441\u0442\u043B\u0438\u0432\u043E-\u043D\u0435\u0442\u043E\u0440\u043E\u043F\u043B\u0438\u0432\u044B\u043C: \u0445\u043E\u0440\u043E\u0448\u0438\u0439 \u0440\u0438\u0442\u043C \u043F\u0440\u0438\u0442\u044F\u043D\u0435\u0442 \u0441\u043E\u0432\u043F\u0430\u0434\u0435\u043D\u0438\u044F.",
+    "\u0423\u044E\u0442\u043D\u043E-\u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0438\u0432\u043D\u044B\u043C: \u0434\u0435\u043B\u0430\u0439 \u043F\u043E \u043E\u0434\u043D\u043E\u043C\u0443 \u0434\u0435\u043B\u0443, \u043D\u043E \u0441 \u0443\u0434\u043E\u0432\u043E\u043B\u044C\u0441\u0442\u0432\u0438\u0435\u043C.",
+    "\u0418\u0441\u043A\u0440\u0435\u043D\u043D\u0438\u043C: \u0441\u0435\u0433\u043E\u0434\u043D\u044F \u043E\u0441\u043E\u0431\u0435\u043D\u043D\u043E \u043B\u0435\u0433\u043A\u043E \u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C \u043E \u0432\u0430\u0436\u043D\u043E\u043C.",
+    "\u0418\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u0442\u0435\u043B\u044C\u0441\u043A\u0438\u043C: \u043D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u044B\u0439 \u0432\u043E\u043F\u0440\u043E\u0441 \u043F\u0440\u0438\u0432\u0435\u0434\u0451\u0442 \u043A \u043E\u0442\u043A\u0440\u044B\u0442\u0438\u044E.",
+    "\u0422\u0451\u043F\u043B\u044B\u043C: \u043A\u043E\u0440\u043E\u0442\u043A\u0438\u0439 \u0440\u0430\u0437\u0433\u043E\u0432\u043E\u0440 \u0441\u043F\u043E\u0441\u043E\u0431\u0435\u043D \u043F\u043E-\u043D\u0430\u0441\u0442\u043E\u044F\u0449\u0435\u043C\u0443 \u0432\u0434\u043E\u0445\u043D\u043E\u0432\u0438\u0442\u044C.",
+    "\u0418\u0433\u0440\u043E\u0432\u044B\u043C: \u043D\u0435\u0441\u0435\u0440\u044C\u0451\u0437\u043D\u044B\u0439 \u043F\u043E\u0434\u0445\u043E\u0434 \u043F\u043E\u043C\u043E\u0436\u0435\u0442 \u0440\u0435\u0448\u0438\u0442\u044C \u0441\u0435\u0440\u044C\u0451\u0437\u043D\u0443\u044E \u0437\u0430\u0434\u0430\u0447\u0443.",
+    "\u0417\u0430\u0431\u043E\u0442\u043B\u0438\u0432\u044B\u043C: \u043C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F \u043F\u0430\u0443\u0437\u0430 \u043F\u043E\u0434\u0430\u0440\u0438\u0442 \u0431\u043E\u043B\u044C\u0448\u0443\u044E \u0438\u0434\u0435\u044E.",
+    "\u0421\u0432\u043E\u0431\u043E\u0434\u043D\u044B\u043C: \u043F\u043E\u043C\u0435\u043D\u044F\u0439 \u043F\u0440\u0438\u0432\u044B\u0447\u043D\u044B\u0439 \u043C\u0430\u0440\u0448\u0440\u0443\u0442 \u0438 \u0432\u043F\u0443\u0441\u0442\u0438 \u043D\u043E\u0432\u043E\u0435.",
+    "\u041C\u0443\u0437\u044B\u043A\u0430\u043B\u044C\u043D\u044B\u043C: \u0432\u0434\u043E\u0445\u043D\u043E\u0432\u0435\u043D\u0438\u0435 \u0441\u043F\u0440\u044F\u0442\u0430\u043B\u043E\u0441\u044C \u0432 \u0437\u0432\u0443\u043A\u0435, \u0446\u0432\u0435\u0442\u0435 \u0438\u043B\u0438 \u0440\u0430\u0437\u0433\u043E\u0432\u043E\u0440\u0435.",
+    "\u0417\u0430\u0432\u0435\u0440\u0448\u0430\u044E\u0449\u0438\u043C: \u043E\u0434\u043D\u043E \u0434\u0430\u0432\u043D\u0435\u0435 \xAB\u043F\u043E\u0442\u043E\u043C\xBB \u0441\u0435\u0433\u043E\u0434\u043D\u044F \u043B\u0435\u0433\u043A\u043E \u043F\u0440\u0435\u0432\u0440\u0430\u0442\u0438\u0442\u044C \u0432 \xAB\u0441\u0434\u0435\u043B\u0430\u043D\u043E\xBB.",
+    "\u0414\u043E\u0431\u0440\u044B\u043C: \u0442\u0432\u043E\u0439 \u043F\u0435\u0440\u0432\u044B\u0439 \u0448\u0430\u0433 \u0431\u0443\u0434\u0435\u0442 \u0437\u0430\u043C\u0435\u0447\u0435\u043D \u0438 \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u0430\u043D.",
+    "\u0421\u043E\u0431\u0440\u0430\u043D\u043D\u044B\u043C: \u0441\u043F\u043E\u043A\u043E\u0439\u043D\u044B\u0439 \u0444\u043E\u043A\u0443\u0441 \u0441\u0434\u0435\u043B\u0430\u0435\u0442 \u0432\u0430\u0436\u043D\u043E\u0435 \u043F\u0440\u043E\u0449\u0435.",
+    "\u0421\u0432\u0435\u0442\u043B\u044B\u043C: \u043F\u0440\u043E\u0441\u0442\u0430\u044F \u0440\u0430\u0434\u043E\u0441\u0442\u044C \u2014 \u0432\u043A\u0443\u0441, \u0441\u043E\u043B\u043D\u0446\u0435 \u0438\u043B\u0438 \u043B\u044E\u0431\u0438\u043C\u0430\u044F \u043F\u0435\u0441\u043D\u044F \u2014 \u0441\u0442\u0430\u043D\u0435\u0442 \u0433\u043B\u0430\u0432\u043D\u043E\u0439.",
+    "\u0420\u0435\u0448\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u043C: \u043D\u0435 \u0438\u0449\u0438 \u0438\u0434\u0435\u0430\u043B\u044C\u043D\u044B\u0439 \u043C\u043E\u043C\u0435\u043D\u0442, \u0441\u043E\u0437\u0434\u0430\u0439 \u0435\u0433\u043E.",
+    "\u041A\u0440\u0430\u0441\u0438\u0432\u044B\u043C: \u0434\u043E\u0431\u0430\u0432\u044C \u043E\u0434\u043D\u0443 \u044F\u0440\u043A\u0443\u044E \u0434\u0435\u0442\u0430\u043B\u044C, \u0438 \u043F\u0440\u043E\u0441\u0442\u0440\u0430\u043D\u0441\u0442\u0432\u043E \u043E\u0442\u0432\u0435\u0442\u0438\u0442.",
+    "\u041F\u0440\u0430\u043A\u0442\u0438\u0447\u043D\u043E-\u0432\u043E\u043B\u0448\u0435\u0431\u043D\u044B\u043C: \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u0441\u044F \u0441\u043E\u0432\u043C\u0435\u0441\u0442\u0438\u0442\u044C \u043F\u043E\u043B\u0435\u0437\u043D\u043E\u0435 \u0438 \u043F\u0440\u0438\u044F\u0442\u043D\u043E\u0435.",
+    "\u041D\u043E\u0432\u043E\u0441\u0442\u043D\u044B\u043C: \u0431\u0443\u0434\u044C \u043D\u0430 \u0441\u0432\u044F\u0437\u0438 \u2014 \u043C\u0438\u0440 \u0433\u043E\u0442\u043E\u0432 \u043F\u043E\u0434\u0435\u043B\u0438\u0442\u044C\u0441\u044F \u0445\u043E\u0440\u043E\u0448\u0438\u043C.",
+    "\u0424\u0430\u043D\u0442\u0430\u0437\u0438\u0439\u043D\u044B\u043C: \u0432\u043E\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0441\u0435\u0433\u043E\u0434\u043D\u044F \u0441\u0442\u0430\u043D\u0435\u0442 \u043F\u0440\u0430\u043A\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u043C \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442\u043E\u043C.",
+    "\u0412\u0441\u0442\u0440\u0435\u0447\u043D\u044B\u043C: \u043D\u043E\u0432\u0430\u044F \u0442\u0440\u043E\u043F\u0438\u043D\u043A\u0430 \u0438\u043B\u0438 \u0440\u0430\u0437\u0433\u043E\u0432\u043E\u0440 \u043F\u043E\u0434\u0430\u0440\u044F\u0442 \u043D\u0443\u0436\u043D\u043E\u0435 \u0437\u043D\u0430\u043A\u043E\u043C\u0441\u0442\u0432\u043E.",
+    "\u0411\u0435\u0440\u0435\u0436\u043D\u044B\u043C: \u0432\u044B\u0431\u0438\u0440\u0430\u0439 \u0441\u0432\u043E\u0439 \u0442\u0435\u043C\u043F, \u0438 \u044D\u043D\u0435\u0440\u0433\u0438\u0438 \u0445\u0432\u0430\u0442\u0438\u0442 \u043D\u0430 \u0432\u0441\u0451 \u0432\u0430\u0436\u043D\u043E\u0435.",
+    "\u0421\u043E\u043B\u043D\u0435\u0447\u043D\u044B\u043C: \u043F\u043E\u0432\u043E\u0434 \u0443\u043B\u044B\u0431\u043D\u0443\u0442\u044C\u0441\u044F \u043F\u043E\u044F\u0432\u0438\u0442\u0441\u044F \u0438\u043C\u0435\u043D\u043D\u043E \u0442\u043E\u0433\u0434\u0430, \u043A\u043E\u0433\u0434\u0430 \u0435\u0433\u043E \u043D\u0435 \u0436\u0434\u0451\u0448\u044C.",
+    "\u0423\u0432\u0435\u0440\u0435\u043D\u043D\u044B\u043C: \u043F\u0435\u0440\u0432\u0430\u044F \u0441\u043F\u043E\u043A\u043E\u0439\u043D\u0430\u044F \u043C\u044B\u0441\u043B\u044C \u043E\u043A\u0430\u0436\u0435\u0442\u0441\u044F \u0432\u0435\u0440\u043D\u043E\u0439.",
+    "\u0412\u0434\u043E\u0445\u043D\u043E\u0432\u043B\u044F\u044E\u0449\u0438\u043C: \u0441\u0434\u0435\u043B\u0430\u0439 \u0447\u0442\u043E-\u0442\u043E \u0447\u0443\u0442\u044C \u043A\u0440\u0430\u0441\u0438\u0432\u0435\u0435, \u0447\u0435\u043C \u043D\u0443\u0436\u043D\u043E.",
+    "\u0423\u0434\u0430\u0447\u043D\u044B\u043C: \u043D\u0430\u0432\u0435\u0434\u0438 \u043F\u043E\u0440\u044F\u0434\u043E\u043A \u0432 \u043E\u0434\u043D\u043E\u0439 \u043C\u0435\u043B\u043E\u0447\u0438 \u2014 \u0438 \u043E\u0442\u043A\u0440\u043E\u0435\u0442\u0441\u044F \u043D\u043E\u0432\u0430\u044F \u0434\u0432\u0435\u0440\u044C."
+  ];
+  var hslToHex = (h, s, l) => {
+    s /= 100;
+    l /= 100;
+    const k = (n) => (n + h / 30) % 12;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    return `#${[f(0), f(8), f(4)].map((v) => Math.round(255 * v).toString(16).padStart(2, "0")).join("")}`;
+  };
+  var makeSlogan = (kind, name, index) => {
+    const subjects = { animal: "\u0422\u0432\u043E\u0439 \u0437\u0432\u0435\u0440\u044C", color: "\u0422\u0432\u043E\u0439 \u0446\u0432\u0435\u0442", adjective: "\u0422\u0432\u043E\u044F \u0441\u0443\u043F\u0435\u0440\u0441\u0438\u043B\u0430" };
+    return `${subjects[kind]} \xAB${name}\xBB ${verbs[Math.floor(index / themes.length) % verbs.length]} ${themes[index % themes.length]}.`;
+  };
+  var shape = (kind) => ({
+    bird: '<path d="M45 70c8-27 30-36 38-23 8-13 30-4 38 23-12 12-52 12-76 0Z"/><path d="m64 66 7 8 7-8M95 66l-7 8-7-8" class="line"/>',
+    sea: '<path d="M42 79c15-32 54-32 76 0-18 21-58 21-76 0Z"/><path d="m42 79-13-14 5 22 12-8M118 79l13-14-5 22-12-8"/><circle cx="72" cy="77" r="3" class="dot"/><circle cx="94" cy="77" r="3" class="dot"/>',
+    reptile: '<path d="M42 84c0-27 16-42 38-42s38 15 38 42c-13 13-63 13-76 0Z"/><path d="M55 55 42 42m63 13 13-13" class="line"/><circle cx="67" cy="73" r="3" class="dot"/><circle cx="93" cy="73" r="3" class="dot"/>',
+    spiky: '<path d="M39 84c5-29 17-43 41-43s36 14 41 43c-21 15-61 15-82 0Z"/><path d="m46 53 8-17 8 15 10-19 9 19 11-17 7 19 12-12" class="line"/><circle cx="67" cy="75" r="3" class="dot"/><circle cx="93" cy="75" r="3" class="dot"/>',
+    big: '<path d="M39 84c0-31 16-46 41-46s41 15 41 46c-18 15-64 15-82 0Z"/><path d="M55 55 46 36 67 48M105 55l9-19-21 12" class="line"/><circle cx="67" cy="73" r="3" class="dot"/><circle cx="93" cy="73" r="3" class="dot"/><path d="M78 84h5" class="line"/>',
+    land: '<path d="M42 84c0-29 15-45 38-45s38 16 38 45c-16 15-60 15-76 0Z"/><path d="M56 55 49 34l18 15M104 55l7-21-18 15" class="line"/><circle cx="67" cy="74" r="3" class="dot"/><circle cx="93" cy="74" r="3" class="dot"/><path d="M76 84q4 4 8 0" class="line"/>'
+  })[kind] || "";
+  var features = {
+    canine: '<path d="M50 63h13m34 0h13" class="line"/><path d="M61 88l-10 5m48-5 10 5" class="line"/>',
+    feline: '<path d="M50 48l9 8m51-8-9 8" class="line"/><path d="M50 82h18m24 0h18" class="line"/>',
+    bear: '<circle cx="55" cy="49" r="8"/><circle cx="105" cy="49" r="8"/>',
+    raccoon: '<path d="M52 68q28-15 56 0l-6 15q-22 9-44 0Z" fill="#292334" opacity=".8"/>',
+    otter: '<path d="M48 82h19m26 0h19M77 88h6" class="line"/>',
+    beaver: '<path d="M69 87v10m8-10v10m8-10v10m8-10v10" class="line"/>',
+    mustelid: '<path d="M53 81h18m18 0h18" class="line"/>',
+    skunk: '<path d="M79 43v31" stroke="#fff" stroke-width="7"/>',
+    panda: '<path d="M57 64q10-9 17 3M86 67q7-12 17-3" fill="#292334" opacity=".85"/>',
+    koala: '<circle cx="52" cy="56" r="13"/><circle cx="108" cy="56" r="13"/><path d="M76 78h8" stroke="#292334" stroke-width="7"/>',
+    marsupial: '<path d="M61 89q19 10 38 0" class="line"/>',
+    rodent: '<path d="M72 87v9m8-9v9" class="line"/>',
+    rabbit: '<path d="M58 54V27m9 27V27M93 54V27m9 27V27" class="line"/>',
+    hedgehog: '<path d="m43 60 8-24 7 19 9-25 8 24 10-24 7 25 11-19 5 24" class="line"/>',
+    bat: '<path d="M47 66q-11-16-20-3 13 12 22 8m64-5q11-16 20-3-13 12-22 8" class="line"/>',
+    sloth: '<path d="M57 72q9 8 18 0m10 0q9 8 18 0" class="line"/>',
+    anteater: '<path d="M74 80h23l-7 10H74"/>',
+    armadillo: '<path d="M51 61q29-17 58 0M50 70q30-17 60 0" class="line"/>',
+    hoofed: '<path d="M56 48l7-15m34 15 7-15" class="line"/>',
+    giraffe: '<path d="M57 52V28m46 24V28" class="line"/><circle cx="57" cy="25" r="4"/><circle cx="103" cy="25" r="4"/>',
+    zebra: '<path d="m57 56 8 30m7-37 8 41m9-41 8 37" class="line"/>',
+    elephant: '<path d="M76 80v23q4 6 8 0V80" class="line"/><path d="M52 60q-10 8-3 20m59-20q10 8 3 20" class="line"/>',
+    rhino: '<path d="m80 57 8-19 8 19"/>',
+    hippo: '<path d="M57 59v-11m46 11V48" class="line"/>',
+    camel: '<path d="M60 54q9-19 20 0 11-19 20 0" class="line"/>',
+    camelid: '<path d="M58 47v-18m44 18V29" class="line"/>',
+    bovine: '<path d="M57 56 43 45m60 11 14-11" class="line"/>',
+    deer: '<path d="m58 55-10-19m14 13-7-22m43 28 10-19m-14 13 7-22" class="line"/>',
+    bigcat: '<path d="M57 57q23 11 46 0M55 68q25 11 50 0" class="line"/>',
+    lion: '<circle cx="80" cy="68" r="40" fill="none" stroke="#292334" stroke-width="7"/>',
+    pinniped: '<path d="M50 84h20m20 0h20" class="line"/>',
+    cetacean: '<path d="M75 57q5-11 10 0" class="line"/>',
+    narwhal: '<path d="m80 55 10-26 5 29" class="line"/>',
+    shark: '<path d="m80 48 10 15H70Z"/>',
+    octopus: '<path d="M58 88q-9 14-17 2m29-2q-6 15-15 6m35-6q6 15 15 6m-35-6q9 14 17 2" class="line"/>',
+    cephalopod: '<path d="M59 88q-5 14-12 6m24-6q-4 15-10 7m28-7q4 15 10 7m-22-7q5 14 12 6" class="line"/>',
+    crab: '<path d="m53 71-15-12m17 21-18 4m68-13 15-12m-17 21 18 4" class="line"/>',
+    seahorse: '<path d="M91 66q17 21-2 35-14 7-18-7" class="line"/>',
+    turtle: '<path d="M58 61q22-15 44 0v27q-22 12-44 0Z" fill="none" class="line"/>',
+    frog: '<circle cx="62" cy="57" r="9"/><circle cx="98" cy="57" r="9"/>',
+    axolotl: '<path d="m54 62-15-8m17 16-17 4m65-12 15-8m-17 16 17 4" class="line"/>',
+    lizard: '<path d="M58 87q-13 7-22-2m66 2q13 7 22-2" class="line"/>',
+    chameleon: '<path d="M94 82q14 4 6 16-8 8-14 0" class="line"/>',
+    croc: '<path d="M55 83h50l-8 10H63Z" class="line"/>',
+    snake: '<path d="M57 58q23-24 46 0M57 79q23 24 46 0" class="line"/>',
+    owl: '<path d="M54 66q13-14 26 0 13-14 26 0" class="line"/>',
+    raptor: '<path d="m77 79 3 12 7-12"/>',
+    parrot: '<path d="M92 74q18 5 5 21" class="line"/>',
+    penguin: '<path d="M64 59q16-9 32 0v31q-16 8-32 0Z" fill="#fff"/>',
+    flamingo: '<path d="M82 51q17 2 11 20-7 19-1 30" class="line"/>',
+    peacock: '<path d="M51 61q-10-21 6-25m10 20q-5-25 10-26m7 26q5-25 20-26m-3 30q15-21 25-10" class="line"/>'
+  };
+  var sceneSvg = (scene, color) => ({
+    forest: `<path d="M5 118 32 68l26 50m-20 0 30-70 31 70m-15 0 35-56 34 56" fill="${color.hex}" opacity=".16"/><path d="M0 118h160" stroke="${color.hex}" stroke-width="5"/>`,
+    mist: `<path d="M0 94q22-24 46 0 23-27 48 0 24-25 66 0v36H0Z" fill="${color.hex}" opacity=".14"/><path d="M12 48h38m40 8h50M6 65h28" stroke="${color.hex}" stroke-width="5" stroke-linecap="round" opacity=".32"/>`,
+    cosmos: `<circle cx="25" cy="30" r="3" fill="${color.hex}"/><circle cx="48" cy="15" r="5" fill="${color.hex}"/><circle cx="126" cy="32" r="4" fill="${color.hex}"/><path d="m18 48 8 8m0-8-8 8m105-32 9 9m0-9-9 9" stroke="${color.hex}" stroke-width="3"/>`,
+    water: `<path d="M0 105q20-12 40 0t40 0 40 0 40 0v25H0Z" fill="${color.hex}" opacity=".17"/><path d="M5 96q16-11 32 0t32 0 32 0 32 0 32 0" fill="none" stroke="${color.hex}" stroke-width="4"/>`
+  })[scene];
+  var animals = species.flatMap(([speciesName, kind]) => realms.map((realm) => ({
+    name: `${speciesName} ${realm.label}`,
+    speciesName,
+    kind,
+    iconType: iconTypeBySpecies[speciesName],
+    scene: sceneForAnimal(kind, realm.scene),
+    realm: realm.label
+  }))).map((animal, index) => ({ id: `animal-${index + 1}`, ...animal, slogan: makeSlogan("animal", animal.name, index) }));
+  var colors = baseColors.flatMap(([base, hue], baseIndex) => colorMoods.map((mood, moodIndex) => {
+    const index = baseIndex * colorMoods.length + moodIndex;
+    const name = `${mood} ${base}`;
+    return { id: `color-${index + 1}`, name, hex: hslToHex(hue, 52 + moodIndex % 3 * 13, 42 + moodIndex * 5 % 35), slogan: makeSlogan("color", name, index) };
+  }));
+  var adjectives = adjectiveRoots.flatMap((root, rootIndex) => intensifiers.map((intensifier, intensifierIndex) => {
+    const index = rootIndex * intensifiers.length + intensifierIndex;
+    const name = `${intensifier} ${root}`;
+    return { id: `adjective-${index + 1}`, name, slogan: makeSlogan("adjective", name, index) };
+  }));
+  function animalSvg(animal, color) {
+    const secondary = hslToHex((parseInt(color.hex.slice(1, 3), 16) + 120) % 360, 76, 63);
+    const gradientId = `gradient-${animal.id}-${color.id}`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 130" role="img" aria-label="${animal.name}"><title>${animal.name} \u2014 ${animal.scene}</title><defs><linearGradient id="${gradientId}" x1="0" x2="1" y1="0" y2="1"><stop stop-color="${color.hex}"/><stop offset="1" stop-color="${secondary}"/></linearGradient></defs>${sceneSvg(animal.scene, color)}<circle cx="80" cy="67" r="54" fill="url(#${gradientId})" opacity=".22"/><g fill="url(#${gradientId})" stroke="#292334" stroke-width="4" stroke-linejoin="round">${shape(animal.kind)}${features[animal.iconType] || ""}</g><g class="line" fill="none" stroke="#292334" stroke-width="4" stroke-linecap="round"><path d="M68 91q12 8 24 0"/></g></svg>`;
+  }
+  var hash = (value) => [...value].reduce((total, char) => (total << 5) - total + char.charCodeAt(0) | 0, 0);
+  var pick = (list, value) => list[Math.abs(value) % list.length];
+  function getDailyForecast(input = "", date = /* @__PURE__ */ new Date()) {
+    const dateKey = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Moscow" }).format(date);
+    const hour = Number(new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Moscow",
+      hour: "2-digit",
+      hourCycle: "h23"
+    }).format(date));
+    const period = hour < 16 ? 0 : 1;
+    const forecastHash = Math.abs(hash(`${input.trim()}|${dateKey}|${period}`));
+    return dailyForecasts[forecastHash % dailyForecasts.length];
+  }
+  function generateAnimalIdentity(input = "", variation = 0) {
+    const query2 = input.trim() || "\u043D\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u0439 \u0433\u0435\u0440\u043E\u0439";
+    const monthKey = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Moscow", year: "numeric", month: "2-digit" }).format(/* @__PURE__ */ new Date());
+    const identityHash = hash(`${query2}|${monthKey}`);
+    const variationHash = hash(`${query2}|${monthKey}|${variation}`);
+    const animal = pick(animals, identityHash);
+    const color = pick(colors, identityHash >> 3);
+    const adjective = pick(adjectives, variationHash >> 6);
+    return { query: query2, animal, color, adjective, fullName: `${adjective.name} ${color.name} ${animal.name}`, svg: animalSvg(animal, color), dayForecast: getDailyForecast(query2) };
+  }
+  function validateCatalog() {
+    const catalog = [animals, colors, adjectives];
+    return catalog.every((items) => items.length === 300 && new Set(items.map((item) => item.id)).size === 300 && new Set(items.map((item) => item.slogan)).size === 300) && animals.every((animal) => animal.iconType && animal.scene && features[animal.iconType]);
+  }
+
+  // src/main.js
+  var form = document.querySelector("#animal-form");
+  var query = document.querySelector("#query");
+  var submit = form.querySelector("button");
+  var result = document.querySelector("#result");
+  var stage = document.querySelector("#stage");
+  var stageAnimal = document.querySelector("#stage-animal");
+  var scanStatus = document.querySelector("#scan-status");
+  var animalName = document.querySelector("#animal-name");
+  var animalSlogan = document.querySelector("#animal-slogan");
+  var colorSlogan = document.querySelector("#color-slogan");
+  var adjectiveSlogan = document.querySelector("#adjective-slogan");
+  var dayForecast = document.querySelector("#day-forecast");
+  var adjectiveTag = document.querySelector("#adjective-tag");
+  var colorTag = document.querySelector("#color-tag");
+  var animalTag = document.querySelector("#animal-tag");
+  var stageCaption = document.querySelector("#stage-caption");
+  var again = document.querySelector("#again");
+  var page = document.querySelector(".page-shell");
+  var themeButtons = document.querySelectorAll("[data-theme-button]");
+  var copyButtons = document.querySelectorAll("[data-copy-prompt]");
+  var copyFeedback = document.querySelector("#copy-feedback");
+  var seed = 0;
+  var lastQuery = "";
+  var searching = false;
+  var currentIdentity = null;
+  if (!validateCatalog()) throw new Error("\u041A\u0430\u0442\u0430\u043B\u043E\u0433 \u0437\u0432\u0435\u0440\u0435\u0439 \u043D\u0435 \u043F\u0440\u043E\u0448\u0451\u043B \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0443.");
+  var renderSvg = (svg) => {
+    stageAnimal.innerHTML = svg;
+  };
+  var idleIdentity = generateAnimalIdentity("\u043F\u0435\u0440\u0432\u044B\u0439 \u043B\u0443\u0447");
+  currentIdentity = idleIdentity;
+  stage.style.setProperty("--accent", idleIdentity.color.hex);
+  page.dataset.scene = idleIdentity.animal.scene;
+  renderSvg(idleIdentity.svg);
+  function showAnimal(value, variation = 0) {
+    const identity = generateAnimalIdentity(value, variation);
+    currentIdentity = identity;
+    animalName.textContent = identity.fullName;
+    adjectiveTag.textContent = identity.adjective.name;
+    colorTag.textContent = identity.color.name;
+    colorTag.style.setProperty("--tag-color", identity.color.hex);
+    animalTag.textContent = identity.animal.name;
+    animalSlogan.textContent = identity.animal.slogan;
+    colorSlogan.textContent = identity.color.slogan;
+    adjectiveSlogan.textContent = identity.adjective.slogan;
+    dayForecast.textContent = identity.dayForecast;
+    stage.style.setProperty("--accent", identity.color.hex);
+    page.dataset.scene = identity.animal.scene;
+    renderSvg(identity.svg);
+    stageCaption.textContent = identity.animal.slogan;
+    result.hidden = false;
+    result.classList.remove("is-visible");
+    requestAnimationFrame(() => result.classList.add("is-visible"));
+  }
+  function scan(value) {
+    if (searching) return;
+    searching = true;
+    result.hidden = true;
+    stage.classList.add("is-searching");
+    form.setAttribute("aria-busy", "true");
+    submit.disabled = true;
+    submit.firstElementChild.textContent = "\u0438\u0449\u0435\u043C\u2026";
+    const frames = ["\u0421\u0432\u0435\u0440\u044F\u0435\u043C \u0441\u043B\u0435\u0434\u044B\u2026", "\u0421\u043A\u0430\u043D\u0438\u0440\u0443\u0435\u043C \u0445\u0430\u0440\u0430\u043A\u0442\u0435\u0440\u2026", "\u041B\u043E\u0432\u0438\u043C \u0442\u0432\u043E\u0439 \u0446\u0432\u0435\u0442\u2026"];
+    let tick = 0;
+    const spinner = window.setInterval(() => {
+      const candidate = animals[Math.floor(Math.random() * animals.length)];
+      const color = generateAnimalIdentity(`${value}-${tick}`, tick).color;
+      stage.style.setProperty("--accent", color.hex);
+      page.dataset.scene = candidate.scene;
+      renderSvg(animalSvg(candidate, color));
+      scanStatus.textContent = frames[tick % frames.length];
+      tick += 1;
+    }, 120);
+    window.setTimeout(() => {
+      window.clearInterval(spinner);
+      stage.classList.remove("is-searching");
+      scanStatus.textContent = "\u041D\u0430\u0448\u043B\u0438!";
+      showAnimal(value, seed);
+      form.removeAttribute("aria-busy");
+      submit.disabled = false;
+      submit.firstElementChild.textContent = "\u043D\u0430\u0439\u0442\u0438 \u043C\u0435\u043D\u044F";
+      searching = false;
+    }, 1450);
+  }
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    lastQuery = query.value;
+    seed = 0;
+    scan(lastQuery);
+  });
+  again.addEventListener("click", () => {
+    seed += 1;
+    scan(lastQuery || query.value);
+  });
+  var sceneDescriptions = {
+    forest: "\u0441\u043A\u0430\u0437\u043E\u0447\u043D\u044B\u0439 \u043B\u0435\u0441 \u0441 \u0432\u044B\u0441\u043E\u043A\u0438\u043C\u0438 \u0434\u0435\u0440\u0435\u0432\u044C\u044F\u043C\u0438 \u0438 \u043C\u044F\u0433\u043A\u0438\u043C \u0441\u0432\u0435\u0442\u043E\u043C \u043C\u0435\u0436\u0434\u0443 \u043A\u0440\u043E\u043D\u0430\u043C\u0438",
+    water: "\u0441\u0432\u0435\u0440\u043A\u0430\u044E\u0449\u0430\u044F \u0432\u043E\u0434\u0430, \u0432\u043E\u043B\u043D\u044B \u0438 \u0432\u043E\u0437\u0434\u0443\u0448\u043D\u044B\u0435 \u0431\u0440\u044B\u0437\u0433\u0438",
+    cosmos: "\u0433\u043B\u0443\u0431\u043E\u043A\u0438\u0439 \u043A\u043E\u0441\u043C\u043E\u0441, \u0437\u0432\u0451\u0437\u0434\u043D\u0430\u044F \u043F\u044B\u043B\u044C \u0438 \u0441\u0438\u044F\u044E\u0449\u0438\u0435 \u0441\u043E\u0437\u0432\u0435\u0437\u0434\u0438\u044F",
+    mist: "\u0442\u0430\u0438\u043D\u0441\u0442\u0432\u0435\u043D\u043D\u044B\u0439 \u0442\u0443\u043C\u0430\u043D, \u043C\u044F\u0433\u043A\u0438\u0435 \u0441\u0438\u043B\u0443\u044D\u0442\u044B \u0445\u043E\u043B\u043C\u043E\u0432 \u0438 \u043B\u0443\u043D\u043D\u043E\u0435 \u0441\u0432\u0435\u0447\u0435\u043D\u0438\u0435"
+  };
+  var imageStyles = {
+    pastel: "\u043C\u044F\u0433\u043A\u0430\u044F \u043F\u0430\u0441\u0442\u0435\u043B\u044C\u043D\u0430\u044F 3D-\u0438\u043B\u043B\u044E\u0441\u0442\u0440\u0430\u0446\u0438\u044F, \u0441\u0430\u0445\u0430\u0440\u043D\u044B\u0439 \u043A\u043E\u0441\u043C\u043E\u0441, \u0441\u0438\u0440\u0435\u043D\u0435\u0432\u044B\u0435 \u0438 \u043F\u0435\u0440\u0441\u0438\u043A\u043E\u0432\u044B\u0435 \u043F\u0435\u0440\u0435\u043B\u0438\u0432\u044B, \u043E\u043A\u0440\u0443\u0433\u043B\u044B\u0435 \u0434\u0440\u0443\u0436\u0435\u043B\u044E\u0431\u043D\u044B\u0435 \u0444\u043E\u0440\u043C\u044B, \u0434\u0435\u043B\u0438\u043A\u0430\u0442\u043D\u043E\u0435 \u0441\u0442\u0443\u0434\u0438\u0439\u043D\u043E\u0435 \u043E\u0441\u0432\u0435\u0449\u0435\u043D\u0438\u0435",
+    neon: "\u043A\u043E\u043D\u0442\u0440\u0430\u0441\u0442\u043D\u0430\u044F \u043D\u0435\u043E\u043D\u043E\u0432\u0430\u044F \u0438\u043B\u043B\u044E\u0441\u0442\u0440\u0430\u0446\u0438\u044F, \u0434\u0438\u043A\u0438\u0439 \u0441\u0430\u0444\u0430\u0440\u0438-\u0444\u0443\u0442\u0443\u0440\u0438\u0437\u043C, \u0442\u0451\u043C\u043D\u044B\u0439 \u0438\u043D\u0434\u0438\u0433\u043E-\u0444\u043E\u043D, \u043B\u0430\u0439\u043C\u043E\u0432\u043E\u0435 \u0438 \u043A\u043E\u0440\u0430\u043B\u043B\u043E\u0432\u043E\u0435 \u0441\u0432\u0435\u0447\u0435\u043D\u0438\u0435, \u0447\u0451\u0442\u043A\u0438\u0435 \u0433\u0440\u0430\u0444\u0438\u0447\u043D\u044B\u0435 \u043A\u043E\u043D\u0442\u0443\u0440\u044B"
+  };
+  function imagePrompt(identity, style) {
+    return `\u0421\u043E\u0437\u0434\u0430\u0439 \u043A\u0432\u0430\u0434\u0440\u0430\u0442\u043D\u0443\u044E \u0438\u043B\u043B\u044E\u0441\u0442\u0440\u0430\u0446\u0438\u044E 1:1. \u0413\u043B\u0430\u0432\u043D\u044B\u0439 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 \u2014 ${identity.animal.name}, \u043E\u0431\u0440\u0430\u0437: \xAB${identity.fullName}\xBB. \u041E\u043A\u0440\u0430\u0441 \u0438 \u0433\u043B\u0430\u0432\u043D\u044B\u0439 \u0430\u043A\u0446\u0435\u043D\u0442: ${identity.color.name} (${identity.color.hex}); \u0436\u0438\u0432\u043E\u0442\u043D\u043E\u0435 \u0434\u043E\u043B\u0436\u043D\u043E \u0431\u044B\u0442\u044C \u043E\u043A\u0440\u0430\u0448\u0435\u043D\u043E \u0438\u043C\u0435\u043D\u043D\u043E \u044D\u0442\u0438\u043C \u0446\u0432\u0435\u0442\u043E\u043C \u0441 \u0436\u0438\u0432\u044B\u043C \u0433\u0440\u0430\u0434\u0438\u0435\u043D\u0442\u043E\u043C. \u0424\u043E\u043D: ${sceneDescriptions[identity.animal.scene]}. \u0425\u0430\u0440\u0430\u043A\u0442\u0435\u0440 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430: ${identity.adjective.name}. \u0421\u044E\u0436\u0435\u0442\u043D\u043E\u0435 \u043E\u043F\u0438\u0441\u0430\u043D\u0438\u0435: ${identity.animal.slogan} ${identity.color.slogan} ${identity.adjective.slogan} \u0421\u0435\u0433\u043E\u0434\u043D\u044F\u0448\u043D\u0435\u0435 \u043D\u0430\u0441\u0442\u0440\u043E\u0435\u043D\u0438\u0435: ${identity.dayForecast} \u0421\u0442\u0438\u043B\u044C: ${imageStyles[style]}. \u0416\u0438\u0432\u043E\u0442\u043D\u043E\u0435 \u043A\u0440\u0443\u043F\u043D\u043E \u0432 \u0446\u0435\u043D\u0442\u0440\u0435, \u0432\u044B\u0440\u0430\u0437\u0438\u0442\u0435\u043B\u044C\u043D\u0430\u044F \u043F\u043E\u0437\u0430, \u0447\u0438\u0441\u0442\u0430\u044F \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0446\u0438\u044F, \u0431\u0435\u0437 \u043D\u0430\u0434\u043F\u0438\u0441\u0435\u0439, \u043B\u043E\u0433\u043E\u0442\u0438\u043F\u043E\u0432 \u0438 \u0440\u0430\u043C\u043E\u043A.`;
+  }
+  function setTheme(theme) {
+    page.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === "neon" ? "#121021" : "#f5f0ff";
+    themeButtons.forEach((button) => {
+      const active = button.dataset.themeButton === theme;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+  }
+  themeButtons.forEach((button) => button.addEventListener("click", () => setTheme(button.dataset.themeButton)));
+  copyButtons.forEach((button) => button.addEventListener("click", async () => {
+    const prompt = imagePrompt(currentIdentity, button.dataset.copyPrompt);
+    try {
+      await navigator.clipboard.writeText(prompt);
+      copyFeedback.textContent = "\u041F\u0440\u043E\u043C\u043F\u0442 \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D.";
+    } catch {
+      copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u2014 \u043E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0430\u0439\u0442 \u043F\u043E HTTPS \u0438\u043B\u0438 localhost.";
+    }
+  }));
+})();

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f0ff" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <title>Кто ты сегодня?</title>
+  </head>
+  <body>
+    <main class="page-shell" data-theme="pastel">
+      <div class="orb orb--one" aria-hidden="true"></div>
+      <div class="orb orb--two" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Кто ты сегодня?">кто ты?</a>
+        <div class="theme-toggle" aria-label="Стиль страницы">
+          <button class="theme-toggle__button is-active" type="button" data-theme-button="pastel" aria-pressed="true">космос</button>
+          <button class="theme-toggle__button" type="button" data-theme-button="neon" aria-pressed="false">неон</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">СЕКРЕТНАЯ ЛАБОРАТОРИЯ ХАРАКТЕРА</p>
+        <h1 id="page-title">Сейчас выясним,<br /><em>кто ты.</em></h1>
+        <p class="intro">Напиши своё имя, прозвище или случайное слово —<br />мы найдём твоего внутреннего зверя.</p>
+
+        <form class="search-card" id="animal-form">
+          <label class="sr-only" for="query">Кого ищем?</label>
+          <input id="query" name="query" type="text" autocomplete="off" placeholder="например, Луна" maxlength="32" />
+          <button type="submit"><span>найти меня</span><span aria-hidden="true">↗</span></button>
+        </form>
+        <p class="scan-status" id="scan-status" aria-live="polite">Готовы заглянуть в звериную ауру?</p>
+
+        <section class="animal-stage" id="stage" aria-label="Твой зверь">
+          <div class="star star--one" aria-hidden="true">✦</div>
+          <div class="star star--two" aria-hidden="true">✦</div>
+          <div class="shadow" aria-hidden="true"></div>
+          <div class="scanner-ring" aria-hidden="true"></div>
+          <div class="animal-icon" id="stage-animal" aria-hidden="true"></div>
+          <p class="stage-caption" id="stage-caption">Твой зверь уже собирает яркие истории.</p>
+        </section>
+
+        <article class="result-card" id="result" aria-live="polite" hidden>
+          <div class="result-card__copy">
+            <p class="result-card__label">ТВОЙ ВНУТРЕННИЙ ЗВЕРЬ</p>
+            <h2 id="animal-name">Твой зверь</h2>
+            <div class="tags" aria-label="Черты зверя"><span id="adjective-tag">нежный</span><span id="color-tag">сиреневый</span><span id="animal-tag">лис</span></div>
+            <ul class="slogans" aria-label="Звериные сигналы">
+              <li id="animal-slogan"></li><li id="color-slogan"></li><li id="adjective-slogan"></li>
+            </ul>
+            <p class="day-forecast"><strong>Какой будет твой день</strong><span id="day-forecast"></span></p>
+          </div>
+          <button class="again" id="again" type="button">ещё вариант <span aria-hidden="true">↻</span></button>
+        </article>
+
+        <section class="prompt-tools" aria-label="Промпты для ИИ">
+          <p>ПРОМПТЫ ДЛЯ КАРТИНКИ С ТВОИМ ЗВЕРЕМ</p>
+          <div>
+            <button type="button" data-copy-prompt="pastel">картинка: сахарный космос</button>
+            <button type="button" data-copy-prompt="neon">картинка: неоновый сафари</button>
+          </div>
+          <span id="copy-feedback" aria-live="polite"></span>
+        </section>
+      </section>
+
+    </main>
+    <script defer src="./app.js"></script>
+  </body>
+</html>

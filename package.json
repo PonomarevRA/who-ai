@@ -1,0 +1,16 @@
+{
+  "name": "who-are-you-animal",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build:direct": "esbuild src/main.js --bundle --format=iife --target=es2020 --outfile=app.js",
+    "dev": "npm run build:direct && vite --host 0.0.0.0",
+    "build": "npm run build:direct && vite build && cp app.js dist/app.js",
+    "preview": "vite preview",
+    "validate": "npm run build:direct && node scripts/validate-catalog.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}
