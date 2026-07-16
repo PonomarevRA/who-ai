@@ -447,14 +447,23 @@
     scan(lastQuery || query.value);
   });
   share.addEventListener("click", async () => {
-    trackMetric("share_click");
+    trackMetric("share_open");
     const params = new URLSearchParams({ a: currentIdentity.animal.id, c: currentIdentity.color.id, v: String(currentIdentity.variation || 0) });
     const shareUrl = `${location.href.split("#")[0].split("?")[0]}#${params.toString()}`;
+    const shareText = `\u042F \u2014 ${currentIdentity.fullName} \u{1F43E} \u0410 \u043A\u0442\u043E \u0442\u044B?`;
+    const isMobile = navigator.maxTouchPoints > 0 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      copyFeedback.textContent = "\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u043E\u0431\u0440\u0430\u0437 \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0430 \u2014 \u0432 \u043D\u0435\u0439 \u043D\u0435\u0442 \u0432\u0432\u0435\u0434\u0451\u043D\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430.";
-    } catch {
-      copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438.";
+      if (isMobile && navigator.share) {
+        await navigator.share({ title: "\u041A\u0442\u043E \u0442\u044B \u0441\u0435\u0433\u043E\u0434\u043D\u044F?", text: shareText, url: shareUrl });
+        trackMetric("share_success");
+        copyFeedback.textContent = "\u0413\u043E\u0442\u043E\u0432\u043E! \u041E\u0442\u043F\u0440\u0430\u0432\u044C \u0434\u0440\u0443\u0433\u0443 \u2014 \u043F\u0443\u0441\u0442\u044C \u0443\u0437\u043D\u0430\u0435\u0442 \u0441\u0432\u043E\u0435\u0433\u043E \u0437\u0432\u0435\u0440\u044F.";
+        return;
+      }
+      await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+      trackMetric("share_copy_fallback");
+      copyFeedback.textContent = "\u0413\u043E\u0442\u043E\u0432\u043E! \u0422\u0435\u043A\u0441\u0442 \u0438 \u0441\u0441\u044B\u043B\u043A\u0430 \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u044B \u2014 \u043E\u0442\u043F\u0440\u0430\u0432\u044C \u0434\u0440\u0443\u0433\u0443.";
+    } catch (error) {
+      if (error.name !== "AbortError") copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043F\u043E\u0434\u0435\u043B\u0438\u0442\u044C\u0441\u044F \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438.";
     }
   });
   var sceneDescriptions = {

@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f5f0ff" />
+    <meta name="description" content="Игровой генератор звериного образа: найди своего цветного зверя и поделись результатом с друзьями." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Кто ты? Найди своего внутреннего зверя" />
+    <meta property="og:description" content="Введи слово или никнейм, получи цветного зверя и узнай, каким будет твой день." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="text/plain" href="./llms.txt" title="Инструкция для ИИ-ассистентов" />
     <link rel="stylesheet" href="./src/style.css" />
@@ -86,8 +90,9 @@
           <div>
             <button type="button" data-copy-prompt="pastel">картинка: сахарный космос</button>
             <button type="button" data-copy-prompt="neon">картинка: неоновый сафари</button>
-            <button type="button" id="share">поделиться образом</button>
           </div>
+          <p class="share-label">СОХРАНИ ИЛИ ПОДЕЛИСЬ ОБРАЗОМ</p>
+          <div><button class="share-button" type="button" id="share">поделиться своим зверем <span aria-hidden="true">↗</span></button></div>
           <span id="copy-feedback" aria-live="polite"></span>
         </section>
       </section>

@@ -85,14 +85,23 @@ function scan(value) {
 form.addEventListener('submit', (event) => { event.preventDefault(); lastQuery = query.value; seed = 0; scan(lastQuery) })
 again.addEventListener('click', () => { seed += 1; scan(lastQuery || query.value) })
 share.addEventListener('click', async () => {
-  trackMetric('share_click')
+  trackMetric('share_open')
   const params = new URLSearchParams({ a: currentIdentity.animal.id, c: currentIdentity.color.id, v: String(currentIdentity.variation || 0) })
   const shareUrl = `${location.href.split('#')[0].split('?')[0]}#${params.toString()}`
+  const shareText = `Я — ${currentIdentity.fullName} 🐾 А кто ты?`
+  const isMobile = navigator.maxTouchPoints > 0 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
   try {
-    await navigator.clipboard.writeText(shareUrl)
-    copyFeedback.textContent = 'Ссылка на образ скопирована — в ней нет введённого текста.'
-  } catch {
-    copyFeedback.textContent = 'Не удалось скопировать ссылку автоматически.'
+    if (isMobile && navigator.share) {
+      await navigator.share({ title: 'Кто ты сегодня?', text: shareText, url: shareUrl })
+      trackMetric('share_success')
+      copyFeedback.textContent = 'Готово! Отправь другу — пусть узнает своего зверя.'
+      return
+    }
+    await navigator.clipboard.writeText(`${shareText} ${shareUrl}`)
+    trackMetric('share_copy_fallback')
+    copyFeedback.textContent = 'Готово! Текст и ссылка скопированы — отправь другу.'
+  } catch (error) {
+    if (error.name !== 'AbortError') copyFeedback.textContent = 'Не удалось поделиться автоматически.'
   }
 })
 
