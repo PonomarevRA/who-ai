@@ -41,7 +41,8 @@
       <header class="topbar">
         <a class="brand" href="/" aria-label="Кто ты сегодня?">кто ты?</a>
         <div class="theme-toggle" aria-label="Стиль страницы">
-          <button class="theme-toggle__button is-active" type="button" data-theme-button="pastel" aria-pressed="true">космос</button>
+          <button class="theme-toggle__button is-active" type="button" data-theme-button="auto" aria-pressed="true">авто</button>
+          <button class="theme-toggle__button" type="button" data-theme-button="pastel" aria-pressed="false">космос</button>
           <button class="theme-toggle__button" type="button" data-theme-button="neon" aria-pressed="false">неон</button>
         </div>
       </header>
@@ -77,10 +78,7 @@
             </ul>
             <p class="day-forecast"><strong>Какой будет твой день</strong><span id="day-forecast"></span></p>
           </div>
-          <div class="result-actions">
-            <button class="again" id="again" type="button">ещё вариант <span aria-hidden="true">↻</span></button>
-            <button class="share" id="share" type="button">поделиться <span aria-hidden="true">↗</span></button>
-          </div>
+          <button class="again" id="again" type="button">ещё вариант <span aria-hidden="true">↻</span></button>
         </article>
 
         <section class="prompt-tools" aria-label="Промпты для ИИ">
@@ -88,6 +86,7 @@
           <div>
             <button type="button" data-copy-prompt="pastel">картинка: сахарный космос</button>
             <button type="button" data-copy-prompt="neon">картинка: неоновый сафари</button>
+            <button type="button" id="share">поделиться образом</button>
           </div>
           <span id="copy-feedback" aria-live="polite"></span>
         </section>

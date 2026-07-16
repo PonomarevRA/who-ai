@@ -89,11 +89,10 @@ share.addEventListener('click', async () => {
   const params = new URLSearchParams({ a: currentIdentity.animal.id, c: currentIdentity.color.id, v: String(currentIdentity.variation || 0) })
   const shareUrl = `${location.href.split('#')[0].split('?')[0]}#${params.toString()}`
   try {
-    if (navigator.share) await navigator.share({ title: 'Кто ты сегодня?', url: shareUrl })
-    else await navigator.clipboard.writeText(shareUrl)
-    copyFeedback.textContent = 'Ссылка на образ готова — в ней нет введённого текста.'
-  } catch (error) {
-    if (error.name !== 'AbortError') copyFeedback.textContent = 'Не удалось поделиться автоматически.'
+    await navigator.clipboard.writeText(shareUrl)
+    copyFeedback.textContent = 'Ссылка на образ скопирована — в ней нет введённого текста.'
+  } catch {
+    copyFeedback.textContent = 'Не удалось скопировать ссылку автоматически.'
   }
 })
 
@@ -112,17 +111,30 @@ function imagePrompt(identity, style) {
   return `Создай квадратную иллюстрацию 1:1. Главный персонаж — ${identity.animal.name}, образ: «${identity.fullName}». Окрас и главный акцент: ${identity.color.name} (${identity.color.hex}); животное должно быть окрашено именно этим цветом с живым градиентом. Фон: ${sceneDescriptions[identity.animal.scene]}. Характер персонажа: ${identity.adjective.name}. Сюжетное описание: ${identity.animal.slogan} ${identity.color.slogan} ${identity.adjective.slogan} Сегодняшнее настроение: ${identity.dayForecast} Стиль: ${imageStyles[style]}. Животное крупно в центре, выразительная поза, чистая композиция, без надписей, логотипов и рамок.`
 }
 
-function setTheme(theme) {
-  page.dataset.theme = theme
-  document.querySelector('meta[name="theme-color"]').content = theme === 'neon' ? '#121021' : '#f5f0ff'
+let themeMode = 'auto'
+function getAutoTheme() {
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'neon'
+  if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'pastel'
+  const hour = new Date().getHours()
+  return hour >= 19 || hour < 7 ? 'neon' : 'pastel'
+}
+
+function setTheme(mode) {
+  themeMode = mode
+  const appliedTheme = mode === 'auto' ? getAutoTheme() : mode
+  page.dataset.theme = appliedTheme
+  document.querySelector('meta[name="theme-color"]').content = appliedTheme === 'neon' ? '#121021' : '#f5f0ff'
   themeButtons.forEach((button) => {
-    const active = button.dataset.themeButton === theme
+    const active = button.dataset.themeButton === mode
     button.classList.toggle('is-active', active)
     button.setAttribute('aria-pressed', String(active))
   })
 }
 
 themeButtons.forEach((button) => button.addEventListener('click', () => setTheme(button.dataset.themeButton)))
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (themeMode === 'auto') setTheme('auto') })
+window.setInterval(() => { if (themeMode === 'auto') setTheme('auto') }, 60_000)
+setTheme('auto')
 copyButtons.forEach((button) => button.addEventListener('click', async () => {
   trackMetric(`copy_ai_${button.dataset.copyPrompt}`)
   const prompt = imagePrompt(currentIdentity, button.dataset.copyPrompt)

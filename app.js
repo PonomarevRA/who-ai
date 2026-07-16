@@ -451,11 +451,10 @@
     const params = new URLSearchParams({ a: currentIdentity.animal.id, c: currentIdentity.color.id, v: String(currentIdentity.variation || 0) });
     const shareUrl = `${location.href.split("#")[0].split("?")[0]}#${params.toString()}`;
     try {
-      if (navigator.share) await navigator.share({ title: "\u041A\u0442\u043E \u0442\u044B \u0441\u0435\u0433\u043E\u0434\u043D\u044F?", url: shareUrl });
-      else await navigator.clipboard.writeText(shareUrl);
-      copyFeedback.textContent = "\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u043E\u0431\u0440\u0430\u0437 \u0433\u043E\u0442\u043E\u0432\u0430 \u2014 \u0432 \u043D\u0435\u0439 \u043D\u0435\u0442 \u0432\u0432\u0435\u0434\u0451\u043D\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430.";
-    } catch (error) {
-      if (error.name !== "AbortError") copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043F\u043E\u0434\u0435\u043B\u0438\u0442\u044C\u0441\u044F \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438.";
+      await navigator.clipboard.writeText(shareUrl);
+      copyFeedback.textContent = "\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u043E\u0431\u0440\u0430\u0437 \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0430 \u2014 \u0432 \u043D\u0435\u0439 \u043D\u0435\u0442 \u0432\u0432\u0435\u0434\u0451\u043D\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430.";
+    } catch {
+      copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438.";
     }
   });
   var sceneDescriptions = {
@@ -471,16 +470,32 @@
   function imagePrompt(identity, style) {
     return `\u0421\u043E\u0437\u0434\u0430\u0439 \u043A\u0432\u0430\u0434\u0440\u0430\u0442\u043D\u0443\u044E \u0438\u043B\u043B\u044E\u0441\u0442\u0440\u0430\u0446\u0438\u044E 1:1. \u0413\u043B\u0430\u0432\u043D\u044B\u0439 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436 \u2014 ${identity.animal.name}, \u043E\u0431\u0440\u0430\u0437: \xAB${identity.fullName}\xBB. \u041E\u043A\u0440\u0430\u0441 \u0438 \u0433\u043B\u0430\u0432\u043D\u044B\u0439 \u0430\u043A\u0446\u0435\u043D\u0442: ${identity.color.name} (${identity.color.hex}); \u0436\u0438\u0432\u043E\u0442\u043D\u043E\u0435 \u0434\u043E\u043B\u0436\u043D\u043E \u0431\u044B\u0442\u044C \u043E\u043A\u0440\u0430\u0448\u0435\u043D\u043E \u0438\u043C\u0435\u043D\u043D\u043E \u044D\u0442\u0438\u043C \u0446\u0432\u0435\u0442\u043E\u043C \u0441 \u0436\u0438\u0432\u044B\u043C \u0433\u0440\u0430\u0434\u0438\u0435\u043D\u0442\u043E\u043C. \u0424\u043E\u043D: ${sceneDescriptions[identity.animal.scene]}. \u0425\u0430\u0440\u0430\u043A\u0442\u0435\u0440 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430: ${identity.adjective.name}. \u0421\u044E\u0436\u0435\u0442\u043D\u043E\u0435 \u043E\u043F\u0438\u0441\u0430\u043D\u0438\u0435: ${identity.animal.slogan} ${identity.color.slogan} ${identity.adjective.slogan} \u0421\u0435\u0433\u043E\u0434\u043D\u044F\u0448\u043D\u0435\u0435 \u043D\u0430\u0441\u0442\u0440\u043E\u0435\u043D\u0438\u0435: ${identity.dayForecast} \u0421\u0442\u0438\u043B\u044C: ${imageStyles[style]}. \u0416\u0438\u0432\u043E\u0442\u043D\u043E\u0435 \u043A\u0440\u0443\u043F\u043D\u043E \u0432 \u0446\u0435\u043D\u0442\u0440\u0435, \u0432\u044B\u0440\u0430\u0437\u0438\u0442\u0435\u043B\u044C\u043D\u0430\u044F \u043F\u043E\u0437\u0430, \u0447\u0438\u0441\u0442\u0430\u044F \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0446\u0438\u044F, \u0431\u0435\u0437 \u043D\u0430\u0434\u043F\u0438\u0441\u0435\u0439, \u043B\u043E\u0433\u043E\u0442\u0438\u043F\u043E\u0432 \u0438 \u0440\u0430\u043C\u043E\u043A.`;
   }
-  function setTheme(theme) {
-    page.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]').content = theme === "neon" ? "#121021" : "#f5f0ff";
+  var themeMode = "auto";
+  function getAutoTheme() {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "neon";
+    if (window.matchMedia("(prefers-color-scheme: light)").matches) return "pastel";
+    const hour = (/* @__PURE__ */ new Date()).getHours();
+    return hour >= 19 || hour < 7 ? "neon" : "pastel";
+  }
+  function setTheme(mode) {
+    themeMode = mode;
+    const appliedTheme = mode === "auto" ? getAutoTheme() : mode;
+    page.dataset.theme = appliedTheme;
+    document.querySelector('meta[name="theme-color"]').content = appliedTheme === "neon" ? "#121021" : "#f5f0ff";
     themeButtons.forEach((button) => {
-      const active = button.dataset.themeButton === theme;
+      const active = button.dataset.themeButton === mode;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", String(active));
     });
   }
   themeButtons.forEach((button) => button.addEventListener("click", () => setTheme(button.dataset.themeButton)));
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (themeMode === "auto") setTheme("auto");
+  });
+  window.setInterval(() => {
+    if (themeMode === "auto") setTheme("auto");
+  }, 6e4);
+  setTheme("auto");
   copyButtons.forEach((button) => button.addEventListener("click", async () => {
     trackMetric(`copy_ai_${button.dataset.copyPrompt}`);
     const prompt = imagePrompt(currentIdentity, button.dataset.copyPrompt);
