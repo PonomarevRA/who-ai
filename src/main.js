@@ -1,4 +1,4 @@
-import { animals, animalSvg, generateAnimalIdentity, validateCatalog } from './mcp/animalIdentity.js'
+import { animals, animalSvg, generateAnimalIdentity, generateIdentityFromIds, validateCatalog } from './mcp/animalIdentity.js'
 
 const form = document.querySelector('#animal-form')
 const query = document.querySelector('#query')
@@ -17,6 +17,7 @@ const colorTag = document.querySelector('#color-tag')
 const animalTag = document.querySelector('#animal-tag')
 const stageCaption = document.querySelector('#stage-caption')
 const again = document.querySelector('#again')
+const share = document.querySelector('#share')
 const page = document.querySelector('.page-shell')
 const themeButtons = document.querySelectorAll('[data-theme-button]')
 const copyButtons = document.querySelectorAll('[data-copy-prompt]')
@@ -25,6 +26,11 @@ let seed = 0
 let lastQuery = ''
 let searching = false
 let currentIdentity = null
+
+// Метрика получает только имена UI-событий — никогда текст поля, ссылки или результат генерации.
+function trackMetric(goal) {
+  if (typeof window.ym === 'function') window.ym(110799755, 'reachGoal', goal)
+}
 
 if (!validateCatalog()) throw new Error('Каталог зверей не прошёл проверку.')
 const renderSvg = (svg) => { stageAnimal.innerHTML = svg }
@@ -36,6 +42,11 @@ renderSvg(idleIdentity.svg)
 
 function showAnimal(value, variation = 0) {
   const identity = generateAnimalIdentity(value, variation)
+  identity.variation = variation
+  showIdentity(identity)
+}
+
+function showIdentity(identity) {
   currentIdentity = identity
   animalName.textContent = identity.fullName
   adjectiveTag.textContent = identity.adjective.name
@@ -73,6 +84,18 @@ function scan(value) {
 
 form.addEventListener('submit', (event) => { event.preventDefault(); lastQuery = query.value; seed = 0; scan(lastQuery) })
 again.addEventListener('click', () => { seed += 1; scan(lastQuery || query.value) })
+share.addEventListener('click', async () => {
+  trackMetric('share_click')
+  const params = new URLSearchParams({ a: currentIdentity.animal.id, c: currentIdentity.color.id, v: String(currentIdentity.variation || 0) })
+  const shareUrl = `${location.href.split('#')[0].split('?')[0]}#${params.toString()}`
+  try {
+    if (navigator.share) await navigator.share({ title: 'Кто ты сегодня?', url: shareUrl })
+    else await navigator.clipboard.writeText(shareUrl)
+    copyFeedback.textContent = 'Ссылка на образ готова — в ней нет введённого текста.'
+  } catch (error) {
+    if (error.name !== 'AbortError') copyFeedback.textContent = 'Не удалось поделиться автоматически.'
+  }
+})
 
 const sceneDescriptions = {
   forest: 'сказочный лес с высокими деревьями и мягким светом между кронами',
@@ -101,6 +124,7 @@ function setTheme(theme) {
 
 themeButtons.forEach((button) => button.addEventListener('click', () => setTheme(button.dataset.themeButton)))
 copyButtons.forEach((button) => button.addEventListener('click', async () => {
+  trackMetric(`copy_ai_${button.dataset.copyPrompt}`)
   const prompt = imagePrompt(currentIdentity, button.dataset.copyPrompt)
   try {
     await navigator.clipboard.writeText(prompt)
@@ -109,3 +133,7 @@ copyButtons.forEach((button) => button.addEventListener('click', async () => {
     copyFeedback.textContent = 'Не удалось скопировать автоматически — откройте сайт по HTTPS или localhost.'
   }
 }))
+
+const sharedParams = new URLSearchParams(location.hash.slice(1))
+const sharedIdentity = generateIdentityFromIds(sharedParams.get('a'), sharedParams.get('c'), Number(sharedParams.get('v')) || 0)
+if (sharedIdentity) showIdentity(sharedIdentity)

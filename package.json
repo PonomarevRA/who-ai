@@ -6,7 +6,7 @@
   "scripts": {
     "build:direct": "esbuild src/main.js --bundle --format=iife --target=es2020 --outfile=app.js",
     "dev": "npm run build:direct && vite --host 0.0.0.0",
-    "build": "npm run build:direct && vite build && cp app.js dist/app.js",
+    "build": "npm run build:direct && vite build && cp app.js dist/app.js && cp llms.txt dist/llms.txt",
     "preview": "vite preview",
     "validate": "npm run build:direct && node scripts/validate-catalog.mjs"
   },

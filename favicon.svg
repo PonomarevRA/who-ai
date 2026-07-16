@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Кто ты?">
+  <defs>
+    <linearGradient id="a" x1="8" y1="6" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a77cff"/>
+      <stop offset="1" stop-color="#ffb46b"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#282333"/>
+  <circle cx="32" cy="32" r="22" fill="url(#a)"/>
+  <path d="M18 27 25 16l7 8 7-8 7 11v19H18Z" fill="#fff9f2" stroke="#282333" stroke-linejoin="round" stroke-width="3"/>
+  <circle cx="27" cy="34" r="2.5" fill="#282333"/><circle cx="37" cy="34" r="2.5" fill="#282333"/>
+  <path d="M29 42q3 3 6 0" fill="none" stroke="#282333" stroke-linecap="round" stroke-width="2.5"/>
+  <circle cx="32" cy="38" r="2" fill="#ff9b7b"/>
+</svg>

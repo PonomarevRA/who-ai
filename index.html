@@ -4,8 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f5f0ff" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="text/plain" href="./llms.txt" title="Инструкция для ИИ-ассистентов" />
     <link rel="stylesheet" href="./src/style.css" />
     <title>Кто ты сегодня?</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Кто ты?",
+        "applicationCategory": "EntertainmentApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "ru",
+        "isAccessibleForFree": true,
+        "description": "Развлекательный генератор звериного образа: прилагательное, цвет, животное, SVG-сцена и прогноз дня."
+      }
+    </script>
+    <!-- Яндекс Метрика: URL намеренно очищается от query и hash, пользовательский ввод не отправляется. -->
+    <script>
+      (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }
+        m[i].l = 1 * new Date()
+        for (var j = 0; j < document.scripts.length; j += 1) { if (document.scripts[j].src === r) return }
+        k = e.createElement(t); a = e.getElementsByTagName(t)[0]; k.async = 1; k.src = r; a.parentNode.insertBefore(k, a)
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=110799755', 'ym')
+
+      var metrikaSafeUrl = location.href.split('#')[0].split('?')[0]
+      ym(110799755, 'init', { ssr: true, clickmap: true, ecommerce: 'dataLayer', url: metrikaSafeUrl, accurateTrackBounce: true, trackLinks: true })
+    </script>
   </head>
   <body>
     <main class="page-shell" data-theme="pastel">
@@ -25,7 +51,7 @@
         <h1 id="page-title">Сейчас выясним,<br /><em>кто ты.</em></h1>
         <p class="intro">Напиши своё имя, прозвище или случайное слово —<br />мы найдём твоего внутреннего зверя.</p>
 
-        <form class="search-card" id="animal-form">
+        <form class="search-card" id="animal-form" method="post">
           <label class="sr-only" for="query">Кого ищем?</label>
           <input id="query" name="query" type="text" autocomplete="off" placeholder="например, Луна" maxlength="32" />
           <button type="submit"><span>найти меня</span><span aria-hidden="true">↗</span></button>
@@ -51,7 +77,10 @@
             </ul>
             <p class="day-forecast"><strong>Какой будет твой день</strong><span id="day-forecast"></span></p>
           </div>
-          <button class="again" id="again" type="button">ещё вариант <span aria-hidden="true">↻</span></button>
+          <div class="result-actions">
+            <button class="again" id="again" type="button">ещё вариант <span aria-hidden="true">↻</span></button>
+            <button class="share" id="share" type="button">поделиться <span aria-hidden="true">↗</span></button>
+          </div>
         </article>
 
         <section class="prompt-tools" aria-label="Промпты для ИИ">

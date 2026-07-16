@@ -330,6 +330,14 @@
     const adjective = pick(adjectives, variationHash >> 6);
     return { query: query2, animal, color, adjective, fullName: `${adjective.name} ${color.name} ${animal.name}`, svg: animalSvg(animal, color), dayForecast: getDailyForecast(query2) };
   }
+  function generateIdentityFromIds(animalId, colorId, variation = 0) {
+    const animal = animals.find((item) => item.id === animalId);
+    const color = colors.find((item) => item.id === colorId);
+    if (!animal || !color) return null;
+    const adjective = pick(adjectives, hash(`${animal.id}|${color.id}|${variation}`) >> 6);
+    const query2 = "\u0442\u0432\u043E\u0439 \u043E\u0431\u0440\u0430\u0437";
+    return { query: query2, animal, color, adjective, fullName: `${adjective.name} ${color.name} ${animal.name}`, svg: animalSvg(animal, color), dayForecast: getDailyForecast(`${animal.id}|${color.id}`), variation };
+  }
   function validateCatalog() {
     const catalog = [animals, colors, adjectives];
     return catalog.every((items) => items.length === 300 && new Set(items.map((item) => item.id)).size === 300 && new Set(items.map((item) => item.slogan)).size === 300) && animals.every((animal) => animal.iconType && animal.scene && features[animal.iconType]);
@@ -353,6 +361,7 @@
   var animalTag = document.querySelector("#animal-tag");
   var stageCaption = document.querySelector("#stage-caption");
   var again = document.querySelector("#again");
+  var share = document.querySelector("#share");
   var page = document.querySelector(".page-shell");
   var themeButtons = document.querySelectorAll("[data-theme-button]");
   var copyButtons = document.querySelectorAll("[data-copy-prompt]");
@@ -361,6 +370,9 @@
   var lastQuery = "";
   var searching = false;
   var currentIdentity = null;
+  function trackMetric(goal) {
+    if (typeof window.ym === "function") window.ym(110799755, "reachGoal", goal);
+  }
   if (!validateCatalog()) throw new Error("\u041A\u0430\u0442\u0430\u043B\u043E\u0433 \u0437\u0432\u0435\u0440\u0435\u0439 \u043D\u0435 \u043F\u0440\u043E\u0448\u0451\u043B \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0443.");
   var renderSvg = (svg) => {
     stageAnimal.innerHTML = svg;
@@ -372,6 +384,10 @@
   renderSvg(idleIdentity.svg);
   function showAnimal(value, variation = 0) {
     const identity = generateAnimalIdentity(value, variation);
+    identity.variation = variation;
+    showIdentity(identity);
+  }
+  function showIdentity(identity) {
     currentIdentity = identity;
     animalName.textContent = identity.fullName;
     adjectiveTag.textContent = identity.adjective.name;
@@ -430,6 +446,18 @@
     seed += 1;
     scan(lastQuery || query.value);
   });
+  share.addEventListener("click", async () => {
+    trackMetric("share_click");
+    const params = new URLSearchParams({ a: currentIdentity.animal.id, c: currentIdentity.color.id, v: String(currentIdentity.variation || 0) });
+    const shareUrl = `${location.href.split("#")[0].split("?")[0]}#${params.toString()}`;
+    try {
+      if (navigator.share) await navigator.share({ title: "\u041A\u0442\u043E \u0442\u044B \u0441\u0435\u0433\u043E\u0434\u043D\u044F?", url: shareUrl });
+      else await navigator.clipboard.writeText(shareUrl);
+      copyFeedback.textContent = "\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u043E\u0431\u0440\u0430\u0437 \u0433\u043E\u0442\u043E\u0432\u0430 \u2014 \u0432 \u043D\u0435\u0439 \u043D\u0435\u0442 \u0432\u0432\u0435\u0434\u0451\u043D\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430.";
+    } catch (error) {
+      if (error.name !== "AbortError") copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043F\u043E\u0434\u0435\u043B\u0438\u0442\u044C\u0441\u044F \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438.";
+    }
+  });
   var sceneDescriptions = {
     forest: "\u0441\u043A\u0430\u0437\u043E\u0447\u043D\u044B\u0439 \u043B\u0435\u0441 \u0441 \u0432\u044B\u0441\u043E\u043A\u0438\u043C\u0438 \u0434\u0435\u0440\u0435\u0432\u044C\u044F\u043C\u0438 \u0438 \u043C\u044F\u0433\u043A\u0438\u043C \u0441\u0432\u0435\u0442\u043E\u043C \u043C\u0435\u0436\u0434\u0443 \u043A\u0440\u043E\u043D\u0430\u043C\u0438",
     water: "\u0441\u0432\u0435\u0440\u043A\u0430\u044E\u0449\u0430\u044F \u0432\u043E\u0434\u0430, \u0432\u043E\u043B\u043D\u044B \u0438 \u0432\u043E\u0437\u0434\u0443\u0448\u043D\u044B\u0435 \u0431\u0440\u044B\u0437\u0433\u0438",
@@ -454,6 +482,7 @@
   }
   themeButtons.forEach((button) => button.addEventListener("click", () => setTheme(button.dataset.themeButton)));
   copyButtons.forEach((button) => button.addEventListener("click", async () => {
+    trackMetric(`copy_ai_${button.dataset.copyPrompt}`);
     const prompt = imagePrompt(currentIdentity, button.dataset.copyPrompt);
     try {
       await navigator.clipboard.writeText(prompt);
@@ -462,4 +491,7 @@
       copyFeedback.textContent = "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u2014 \u043E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0430\u0439\u0442 \u043F\u043E HTTPS \u0438\u043B\u0438 localhost.";
     }
   }));
+  var sharedParams = new URLSearchParams(location.hash.slice(1));
+  var sharedIdentity = generateIdentityFromIds(sharedParams.get("a"), sharedParams.get("c"), Number(sharedParams.get("v")) || 0);
+  if (sharedIdentity) showIdentity(sharedIdentity);
 })();

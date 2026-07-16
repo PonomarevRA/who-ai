@@ -128,6 +128,14 @@ export function generateAnimalIdentity(input = '', variation = 0) {
   const animal = pick(animals, identityHash); const color = pick(colors, identityHash >> 3); const adjective = pick(adjectives, variationHash >> 6)
   return { query, animal, color, adjective, fullName: `${adjective.name} ${color.name} ${animal.name}`, svg: animalSvg(animal, color), dayForecast: getDailyForecast(query) }
 }
+export function generateIdentityFromIds(animalId, colorId, variation = 0) {
+  const animal = animals.find((item) => item.id === animalId)
+  const color = colors.find((item) => item.id === colorId)
+  if (!animal || !color) return null
+  const adjective = pick(adjectives, hash(`${animal.id}|${color.id}|${variation}`) >> 6)
+  const query = 'твой образ'
+  return { query, animal, color, adjective, fullName: `${adjective.name} ${color.name} ${animal.name}`, svg: animalSvg(animal, color), dayForecast: getDailyForecast(`${animal.id}|${color.id}`), variation }
+}
 export function validateCatalog() {
   const catalog = [animals, colors, adjectives]
   return catalog.every((items) => items.length === 300 && new Set(items.map((item) => item.id)).size === 300 && new Set(items.map((item) => item.slogan)).size === 300)
