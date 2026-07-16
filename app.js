@@ -370,8 +370,8 @@
   var lastQuery = "";
   var searching = false;
   var currentIdentity = null;
-  function trackMetric(goal) {
-    if (typeof window.ym === "function") window.ym(110799755, "reachGoal", goal);
+  function trackMetric(goal, params) {
+    if (typeof window.ym === "function") window.ym(110799755, "reachGoal", goal, params);
   }
   if (!validateCatalog()) throw new Error("\u041A\u0430\u0442\u0430\u043B\u043E\u0433 \u0437\u0432\u0435\u0440\u0435\u0439 \u043D\u0435 \u043F\u0440\u043E\u0448\u0451\u043B \u043F\u0440\u043E\u0432\u0435\u0440\u043A\u0443.");
   var renderSvg = (svg) => {
@@ -389,6 +389,14 @@
   }
   function showIdentity(identity) {
     currentIdentity = identity;
+    trackMetric("identity_result", {
+      animal_id: identity.animal.id,
+      animal: identity.animal.name,
+      color_id: identity.color.id,
+      color: identity.color.name,
+      adjective_id: identity.adjective.id,
+      adjective: identity.adjective.name
+    });
     animalName.textContent = identity.fullName;
     adjectiveTag.textContent = identity.adjective.name;
     colorTag.textContent = identity.color.name;

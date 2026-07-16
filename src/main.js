@@ -28,8 +28,8 @@ let searching = false
 let currentIdentity = null
 
 // Метрика получает только имена UI-событий — никогда текст поля, ссылки или результат генерации.
-function trackMetric(goal) {
-  if (typeof window.ym === 'function') window.ym(110799755, 'reachGoal', goal)
+function trackMetric(goal, params) {
+  if (typeof window.ym === 'function') window.ym(110799755, 'reachGoal', goal, params)
 }
 
 if (!validateCatalog()) throw new Error('Каталог зверей не прошёл проверку.')
@@ -48,6 +48,14 @@ function showAnimal(value, variation = 0) {
 
 function showIdentity(identity) {
   currentIdentity = identity
+  trackMetric('identity_result', {
+    animal_id: identity.animal.id,
+    animal: identity.animal.name,
+    color_id: identity.color.id,
+    color: identity.color.name,
+    adjective_id: identity.adjective.id,
+    adjective: identity.adjective.name,
+  })
   animalName.textContent = identity.fullName
   adjectiveTag.textContent = identity.adjective.name
   colorTag.textContent = identity.color.name
