@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://fun-who-ai.twc1.net/sitemap.xml

@@ -1,0 +1,16 @@
+;(function () {
+  const locales = window.WhoAiLocales || (window.WhoAiLocales = {})
+  locales.ja = {
+    code: 'ja', htmlLang: 'ja', title: '日本語', nativeName: '日本語',
+    strings: {
+      'meta.title': '今日のわたしは何のどうぶつ？ たのしいあそび', 'meta.description': 'カラフルなどうぶつに会えるたのしいあそび。ことばを書いて、今日のどうぶつに会おう。', 'brand.label': '今日のわたしはだれ？', 'language.label': '言語', 'language.menu': '言語を選ぶ', 'skip.content': '本文へ移動', 'themes.label': 'ページのスタイル', 'themes.auto': '自動', 'themes.pastel': '宇宙', 'themes.neon': 'ネオン',
+      'hero.eyebrow': 'ひみつの性格ラボ', 'hero.title.one': '今日のわたしは何のどうぶつ', 'hero.title.two': 'かな？', 'hero.intro': '名前、あだ名、好きなことばを書いてみよう。カラフルなどうぶつが今日のやさしいことばをくれるよ。', 'search.label': 'だれをさがす？', 'search.help': '名前かことばを書いて、「わたしをさがす」を押してね。', 'search.placeholder': 'たとえば、ルナ', 'search.submit': 'わたしをさがす',
+      'scan.ready': 'どうぶつのオーラをのぞいてみる？', 'scan.found': '見つけた！', 'scan.searching': 'さがし中…', 'scan.searchingOne': '足あとをくらべ中…', 'scan.searchingTwo': '気持ちをのぞき中…', 'scan.searchingThree': 'きみの色をさがし中…', 'scan.frame.1': '足あとをくらべ中…', 'scan.frame.2': '気持ちをのぞき中…', 'scan.frame.3': 'きみの色をさがし中…',
+      'stage.label': 'きみのどうぶつ', 'stage.result': 'きみのどうぶつ', 'stage.caption': 'きみのどうぶつは、きらきらのお話を集めているよ。', 'result.label': 'きみの心のどうぶつ', 'result.fallback': 'きみのどうぶつ', 'result.forecastFallback': '今日はよい日になりそう。', 'result.tags': 'どうぶつのとくちょう', 'result.signals': 'どうぶつからのおしらせ', 'result.forecast': '今日がどんな日になるかな？', 'result.again': 'もうひとつ',
+      'tools.label': '絵のボタン', 'tools.title': 'きみのどうぶつの絵を作ろう', 'tools.pastel': '絵：キャンディ宇宙', 'tools.neon': '絵：ネオンサファリ', 'tools.share.label': '絵をのこす・わける', 'tools.share': 'わたしのどうぶつをシェア', 'share.title': '今日のわたしはだれ？', 'share.text': 'わたしは {identity} 🐾 きみはだれ？',
+      'feedback.promptCopied': '絵のための文をコピーしたよ。', 'feedback.promptError': 'コピーできなかったよ。安全なリンクでサイトを開いてね。', 'feedback.shareSuccess': 'できた！ お友だちにも送って、その子のどうぶつを見つけよう。', 'feedback.shareCopied': 'できた！ 文とリンクをコピーしたよ。', 'feedback.shareError': '自動ではシェアできなかったよ。', 'feedback.prompt.copied': '絵のための文をコピーしたよ。', 'feedback.prompt.failed': 'コピーできなかったよ。安全なリンクでサイトを開いてね。', 'feedback.share.success': 'できた！ お友だちにも送って、その子のどうぶつを見つけよう。', 'feedback.share.copied': 'できた！ 文とリンクをコピーしたよ。', 'feedback.share.failed': '自動ではシェアできなかったよ。',
+      'seo.eyebrow': 'どうぶつのあそび', 'seo.title': 'きみのどうぶつを見つけよう', 'seo.intro': '「きみはだれ？」は、たのしいどうぶつのあそび。名前やことばを書くと、カラフルなどうぶつと今日のやさしいことばが出てくるよ。', 'seo.step.1': 'ことばを書く。', 'seo.step.2': 'やって来たどうぶつを見る。', 'seo.step.3': 'ボタンを押してどうぶつの絵を作る。', 'seo.avatar.title': 'きみのどうぶつの絵を作ろう', 'seo.avatar.text': '下の絵のボタンを押すと、どうぶつの絵を作れるよ。', 'faq.title': 'よくあるしつもん', 'faq.1.q': 'これはあそび？', 'faq.1.a': 'うん。どうぶつに会えるたのしいあそびだよ。', 'faq.2.q': 'どうしてこのどうぶつなの？', 'faq.2.a': '書いたことばが、どうぶつをえらぶ手がかりになるよ。ほかのことばでも試してみてね。', 'faq.3.q': '今日のことばって何？', 'faq.3.a': '今日のためのやさしいことばだよ。未来は当てられないよ。', 'faq.4.q': '絵を作れる？', 'faq.4.a': 'うん。絵のボタンを押して、お友だちに見せてね。'
+    },
+    dynamic: { fullName: '{adjective} {color} {animal}', shareText: 'わたしは {identity} 🐾 きみはだれ？', imagePrompt: '正方形1:1の絵を作ってください。主役は{animal}、名前は「{identity}」。主な色は{color}（{hex}）で、生き生きしたグラデーションを使います。背景：{scene}。性格：{adjective}。お話：{animalSlogan} {colorSlogan} {adjectiveSlogan} 今日の気分：{forecast}。スタイル：{style}。どうぶつを中央に大きく、文字・ロゴ・枠なし。', scene: { forest: '高い木とやわらかい光のあるおとぎ話の森', water: 'きらきらの水、波と小さなしぶき', cosmos: '深い宇宙、星くずと光る星座', mist: 'ふしぎな霧、やさしい丘と月の光' }, style: { pastel: 'やわらかなパステル3D、キャンディ宇宙と丸く親しみやすい形', neon: '明るいネオン、未来のサファリとはっきりした線' } }
+  }
+})()

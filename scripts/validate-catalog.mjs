@@ -50,14 +50,33 @@ ensure(morningForecast.split(/(?<=\.) /).length === 3, 'Прогноз долж�
 const forecastVariants = new Set(Array.from({ length: 300 }, (_, index) => getDailyForecast(`герой-${index}`, new Date('2026-07-17T09:00:00+03:00'))))
 ensure(forecastVariants.size >= 280, 'Нужно больше разнообразных составных прогнозов.')
 
-const isSafeSvg = (svg) => !/undefined|null|NaN|\[object Object\]|<script|onload=|onclick=/i.test(svg)
+const isSafeSvg = (svg) => !/undefined|null|NaN|\[object Object\]|<script|<animate|onload=|onclick=/i.test(svg)
 const anatomyOf = (svg) => [...svg.matchAll(/data-anatomy="([^"]+)"/g)].map(([, name]) => name)
 const uniqueSpecies = [...new Map(animals.map((animal) => [animal.speciesName, animal])).values()]
 
 ensure(uniqueSpecies.length === 75, 'Ожидалось 75 самостоятельных видов животных.')
 const speciesFingerprints = uniqueSpecies.map((animal) => anatomyOf(animalSvg(animal, colors[0])).join('|'))
-ensure(speciesFingerprints.every((fingerprint) => fingerprint.split('|').length >= 2), 'У каждого вида должны быть минимум две анатомические детали.')
+ensure(speciesFingerprints.every((fingerprint) => fingerprint.split('|').length >= 5), 'У каждого вида должны быть минимум пять анатомических деталей.')
 ensure(new Set(speciesFingerprints).size === 75, 'Анатомический профиль каждого вида должен быть уникальным.')
+
+const requiredDetails = new Map([
+  ['тапир', ['muzzle-tapir-trunk']], ['жираф', ['append-ossicones', 'body-giraffe-neck', 'mark-giraffe-patches']], ['слон', ['muzzle-trunk', 'append-elephant-tusks']], ['носорог', ['append-rhino-horn']], ['кенгуру', ['append-kangaroo-tail']], ['бизон', ['body-bison-hump']],
+  ['дельфин', ['body-dolphin-rostrum']], ['кит', ['body-whale-flukes']], ['акула', ['body-shark-profile']], ['белуха', ['head-beluga-melon']], ['краб', ['body-crab-eyestalks']], ['черепаха', ['body-turtle-scutes']],
+  ['крокодил', ['body-croc-teeth']], ['змея', ['body-snake-tongue']], ['сова', ['face-owl-discs']], ['фламинго', ['body-flamingo-neck']], ['павлин', ['body-peacock-fan']],
+])
+for (const [speciesName, required] of requiredDetails) {
+  const animal = uniqueSpecies.find((item) => item.speciesName === speciesName)
+  const details = anatomyOf(animalSvg(animal, colors[0]))
+  ensure(required.every((detail) => details.includes(detail)), `У «${speciesName}» нет обязательной анатомической детали.`)
+}
+
+for (const animal of uniqueSpecies) {
+  const svg = animalSvg(animal, colors[0])
+  ensure(svg.includes('class="animal-svg"') && svg.includes('data-motion="body"'), `Нет базовой анимационной разметки: ${animal.speciesName}`)
+  ensure(svg.includes('data-motion="glow"') && svg.includes('data-layer="scene"'), `Нет свечения или сцены: ${animal.speciesName}`)
+  if (['land', 'big', 'spiky', 'reptile', 'bird'].includes(animal.kind)) ensure(svg.includes('data-motion="eyes"'), `Нет анимации глаз: ${animal.speciesName}`)
+  if (animal.kind === 'bird') ensure(svg.includes('data-motion="wings"') || (animal.speciesName === 'пингвин' && svg.includes('data-motion="water-part"')), `Нет анимации крыльев: ${animal.speciesName}`)
+}
 
 for (const animal of animals) {
   for (const color of colors) {
@@ -65,13 +84,13 @@ for (const animal of animals) {
     const gradientId = `gradient-${animal.id}-${color.id}`
     ensure(svg.startsWith('<svg ') && svg.endsWith('</svg>'), `Некорректная SVG-оболочка: ${animal.id}/${color.id}`)
     ensure(svg.includes('viewBox="0 0 160 130"') && svg.includes('role="img"'), `Нет доступной структуры SVG: ${animal.id}/${color.id}`)
-    ensure(svg.includes(`aria-label="${animal.name}"`), `SVG-иконка не подписана: ${animal.id}/${color.id}`)
+    ensure(svg.includes(`aria-labelledby="title-${animal.id}-${color.id}"`) && svg.includes(`<title id="title-${animal.id}-${color.id}">${animal.name}`), `SVG-иконка не подписана: ${animal.id}/${color.id}`)
     ensure(svg.includes(`data-icon-type="${animal.iconType}"`) && svg.includes(`data-scene="${animal.scene}"`), `Нет метаданных иконки: ${animal.id}/${color.id}`)
     ensure(svg.includes(`<linearGradient id="${gradientId}"`) && svg.includes(`url(#${gradientId})`), `Сломана заливка SVG: ${animal.id}/${color.id}`)
     ensure(svg.includes(color.hex), `Цвет SVG не совпадает с результатом: ${animal.id}/${color.id}`)
-    ensure(anatomyOf(svg).length >= 2 && isSafeSvg(svg), `Некорректная анатомия или разметка: ${animal.id}/${color.id}`)
+    ensure(anatomyOf(svg).length >= 5 && svg.includes('.line{fill:none') && svg.indexOf('data-layer="behind"') < svg.indexOf('data-layer="base"') && svg.indexOf('data-layer="base"') < svg.indexOf('data-layer="markings"') && svg.indexOf('data-layer="markings"') < svg.indexOf('data-layer="face"') && isSafeSvg(svg), `Некорректная анатомия или разметка: ${animal.id}/${color.id}`)
   }
 }
 ensure(new Set(animals.map((animal, index) => animalSvg(animal, colors[index]))).size === 300, 'Для каждого звериного образа должна собираться отдельная SVG-иконка.')
 
-console.log('Каталог проверен: 300 животных, 75 уникальных анатомических профилей, 90 000 SVG-пар, 300 уникальных цветов, 300 прилагательных, 900 уникальных слоганов.')
+console.log('Каталог проверен: 300 животных, 75 уникальных анатомических профилей с 5+ деталями, 90 000 SVG-пар, 300 уникальных цветов, 300 прилагательных, 900 уникальных слоганов.')

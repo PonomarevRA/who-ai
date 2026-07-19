@@ -4,24 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f5f0ff" />
-    <meta name="description" content="Игровой генератор звериного образа: найди своего цветного зверя и поделись результатом с друзьями." />
+    <!-- После deploy Worker сюда подставляется его workers.dev-адрес; ввод пользователя в ссылку не передаётся. -->
+    <meta name="share-preview-origin" content="" />
+    <meta name="description" content="Весёлая игра про цветных зверей. Напиши слово и узнай, какой зверёк пришёл к тебе сегодня." data-i18n-content="meta.description" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://fun-who-ai.twc1.net/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Кто ты? Найди своего внутреннего зверя" />
-    <meta property="og:description" content="Введи слово или никнейм, получи цветного зверя и узнай, каким будет твой день." />
+    <meta property="og:site_name" content="Кто ты?" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:url" content="https://fun-who-ai.twc1.net/" />
+    <meta property="og:title" content="Какое ты животное сегодня?" />
+    <meta property="og:description" content="Напиши слово и узнай, какой весёлый цветной зверёк пришёл к тебе сегодня." />
+    <meta property="og:image" content="https://fun-who-ai.twc1.net/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Какое ты животное сегодня?" />
+    <meta name="twitter:description" content="Весёлая игра про цветных зверей и добрые мысли на день." />
+    <meta name="twitter:image" content="https://fun-who-ai.twc1.net/og-image.png" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="alternate" type="text/plain" href="./llms.txt" title="Инструкция для ИИ-ассистентов" />
     <link rel="stylesheet" href="./src/style.css" />
-    <title>Кто ты сегодня?</title>
+    <title>Какое ты животное сегодня? Весёлая игра</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Кто ты?",
-        "applicationCategory": "EntertainmentApplication",
-        "operatingSystem": "Web",
-        "inLanguage": "ru",
-        "isAccessibleForFree": true,
-        "description": "Развлекательный генератор звериного образа: прилагательное, цвет, животное, SVG-сцена и прогноз дня."
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "Кто ты?",
+            "url": "https://fun-who-ai.twc1.net/",
+            "inLanguage": "ru",
+            "description": "Весёлая игра про цветных зверей по имени или слову."
+          },
+          {
+            "@type": "WebApplication",
+            "name": "Кто ты?",
+            "url": "https://fun-who-ai.twc1.net/",
+            "image": "https://fun-who-ai.twc1.net/og-image.png",
+            "applicationCategory": "EntertainmentApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "ru",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
+            "featureList": ["Цветной зверёк", "Картинка", "Добрая подсказка"],
+            "description": "Весёлая игра: цветной зверёк, картинка и добрая мысль на день."
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "Это игра?", "acceptedAnswer": { "@type": "Answer", "text": "Да. Это весёлая игра про зверят." } },
+              { "@type": "Question", "name": "Почему у меня такой зверёк?", "acceptedAnswer": { "@type": "Answer", "text": "Твоё слово помогает игре выбрать зверька." } },
+              { "@type": "Question", "name": "Что за слова про день?", "acceptedAnswer": { "@type": "Answer", "text": "Это добрая подсказка на сегодня. Она не умеет угадывать будущее." } },
+              { "@type": "Question", "name": "Можно сделать картинку?", "acceptedAnswer": { "@type": "Answer", "text": "Да. Нажми кнопку с картинкой и покажи зверька друзьям." } }
+            ]
+          }
+        ]
       }
     </script>
     <!-- Яндекс Метрика: URL намеренно очищается от query и hash, пользовательский ввод не отправляется. -->
@@ -38,66 +82,110 @@
     </script>
   </head>
   <body>
-    <main class="page-shell" data-theme="pastel">
+    <a class="skip-link" href="#main-content" data-i18n="skip.content">Перейти к содержимому</a>
+    <div class="page-shell" data-theme="pastel">
       <div class="orb orb--one" aria-hidden="true"></div>
       <div class="orb orb--two" aria-hidden="true"></div>
 
       <header class="topbar">
-        <a class="brand" href="/" aria-label="Кто ты сегодня?">кто ты?</a>
-        <div class="theme-toggle" aria-label="Стиль страницы">
-          <button class="theme-toggle__button is-active" type="button" data-theme-button="auto" aria-pressed="true">авто</button>
-          <button class="theme-toggle__button" type="button" data-theme-button="pastel" aria-pressed="false">космос</button>
-          <button class="theme-toggle__button" type="button" data-theme-button="neon" aria-pressed="false">неон</button>
+        <a class="brand" href="/" aria-label="Кто ты сегодня?" data-i18n-aria-label="brand.label">кто ты?</a>
+        <div class="topbar__controls">
+          <label class="language-switcher" for="language-select">
+            <span class="sr-only" data-i18n="language.label">Язык сайта</span>
+            <span aria-hidden="true">🌐</span>
+            <select id="language-select" aria-describedby="language-status">
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="it">🇮🇹 Italiano</option>
+              <option value="ko">🇰🇷 한국어</option>
+              <option value="ja">🇯🇵 日本語</option>
+              <option value="zh-Hans">🇨🇳 中文</option>
+            </select>
+          </label>
+          <span id="language-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
+          <div class="theme-toggle" role="group" aria-label="Стиль страницы" data-i18n-aria-label="themes.label">
+            <button class="theme-toggle__button is-active" type="button" data-theme-button="auto" aria-pressed="true" data-i18n="themes.auto">авто</button>
+            <button class="theme-toggle__button" type="button" data-theme-button="pastel" aria-pressed="false" data-i18n="themes.pastel">космос</button>
+            <button class="theme-toggle__button" type="button" data-theme-button="neon" aria-pressed="false" data-i18n="themes.neon">неон</button>
+          </div>
         </div>
       </header>
 
+      <main id="main-content" tabindex="-1">
       <section class="hero" aria-labelledby="page-title">
-        <p class="eyebrow">СЕКРЕТНАЯ ЛАБОРАТОРИЯ ХАРАКТЕРА</p>
-        <h1 id="page-title">Сейчас выясним,<br /><em>кто ты.</em></h1>
-        <p class="intro">Напиши своё имя, прозвище или случайное слово —<br />мы найдём твоего внутреннего зверя.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">СЕКРЕТНАЯ ЛАБОРАТОРИЯ ХАРАКТЕРА</p>
+        <h1 id="page-title"><span data-i18n="hero.title.one">Какое ты животное</span><br /><em data-i18n="hero.title.two">сегодня?</em></h1>
+        <p class="intro" data-i18n="hero.intro">Напиши имя, прозвище или слово — и встречай цветного зверя. Он принесёт тебе добрую мысль на день.</p>
 
         <form class="search-card" id="animal-form" method="post">
-          <label class="sr-only" for="query">Кого ищем?</label>
-          <input id="query" name="query" type="text" autocomplete="off" placeholder="например, Луна" maxlength="32" />
-          <button type="submit"><span>найти меня</span><span aria-hidden="true">↗</span></button>
+          <label class="sr-only" for="query" data-i18n="search.label">Кого ищем?</label>
+          <span class="sr-only" id="search-help" data-i18n="search.help">Напиши имя или любое слово, затем нажми «найти меня».</span>
+          <input id="query" name="query" type="text" autocomplete="off" placeholder="например, Луна" maxlength="32" aria-describedby="search-help scan-status" data-i18n-placeholder="search.placeholder" />
+          <button type="submit"><span data-i18n="search.submit">найти меня</span><span aria-hidden="true">↗</span></button>
         </form>
-        <p class="scan-status" id="scan-status" aria-live="polite">Готовы заглянуть в звериную ауру?</p>
+        <p class="scan-status" id="scan-status" role="status" aria-live="polite" aria-atomic="true" data-i18n="scan.ready">Готовы заглянуть в звериную ауру?</p>
 
-        <section class="animal-stage" id="stage" aria-label="Твой зверь">
+        <section class="animal-stage" id="stage" aria-labelledby="stage-caption">
           <div class="star star--one" aria-hidden="true">✦</div>
           <div class="star star--two" aria-hidden="true">✦</div>
           <div class="shadow" aria-hidden="true"></div>
           <div class="scanner-ring" aria-hidden="true"></div>
-          <div class="animal-icon" id="stage-animal" aria-hidden="true"></div>
-          <p class="stage-caption" id="stage-caption">Твой зверь уже собирает яркие истории.</p>
+          <div class="animal-icon animal-icon--share" id="stage-animal" role="button" tabindex="0" aria-label="поделиться своим зверем" data-i18n-aria-label="tools.share"></div>
+          <p class="stage-caption" id="stage-caption" role="status" aria-live="polite" aria-atomic="true" data-i18n="stage.caption">Твой зверь уже собирает яркие истории.</p>
         </section>
 
-        <article class="result-card" id="result" aria-live="polite" hidden>
+        <article class="result-card" id="result" role="region" aria-labelledby="animal-name" aria-live="polite" aria-atomic="true" hidden>
           <div class="result-card__copy">
-            <p class="result-card__label">ТВОЙ ВНУТРЕННИЙ ЗВЕРЬ</p>
-            <h2 id="animal-name">Твой зверь</h2>
-            <div class="tags" aria-label="Черты зверя"><span id="adjective-tag">нежный</span><span id="color-tag">сиреневый</span><span id="animal-tag">лис</span></div>
-            <ul class="slogans" aria-label="Звериные сигналы">
+            <p class="result-card__label" data-i18n="result.label">ТВОЙ ВНУТРЕННИЙ ЗВЕРЬ</p>
+            <h2 id="animal-name" data-i18n="result.fallback">Твой зверь</h2>
+            <div class="tags" aria-label="Черты зверя" data-i18n-aria-label="result.tags"><span id="adjective-tag">нежный</span><span id="color-tag">сиреневый</span><span id="animal-tag">лис</span></div>
+            <ul class="slogans" aria-label="Звериные сигналы" data-i18n-aria-label="result.signals">
               <li id="animal-slogan"></li><li id="color-slogan"></li><li id="adjective-slogan"></li>
             </ul>
-            <p class="day-forecast"><strong>Какой будет твой день</strong><span id="day-forecast"></span></p>
+            <p class="day-forecast"><strong data-i18n="result.forecast">Какой будет твой день</strong><span id="day-forecast"></span></p>
           </div>
-          <button class="again" id="again" type="button">ещё вариант <span aria-hidden="true">↻</span></button>
+          <button class="again" id="again" type="button"><span data-i18n="result.again">ещё вариант</span> <span aria-hidden="true">↻</span></button>
         </article>
 
-        <section class="prompt-tools" aria-label="Промпты для ИИ">
-          <p>ПРОМПТЫ ДЛЯ КАРТИНКИ С ТВОИМ ЗВЕРЕМ</p>
+        <section class="prompt-tools" aria-labelledby="prompt-tools-title">
+          <p id="prompt-tools-title" data-i18n="tools.title">ПРОМПТЫ ДЛЯ КАРТИНКИ С ТВОИМ ЗВЕРЕМ</p>
           <div>
-            <button type="button" data-copy-prompt="pastel">картинка: сахарный космос</button>
-            <button type="button" data-copy-prompt="neon">картинка: неоновый сафари</button>
+            <button type="button" data-copy-prompt="pastel" data-i18n="tools.pastel">картинка: сахарный космос</button>
+            <button type="button" data-copy-prompt="neon" data-i18n="tools.neon">картинка: неоновый сафари</button>
           </div>
-          <p class="share-label">СОХРАНИ ИЛИ ПОДЕЛИСЬ ОБРАЗОМ</p>
-          <div><button class="share-button" type="button" id="share">поделиться своим зверем <span aria-hidden="true">↗</span></button></div>
-          <span id="copy-feedback" aria-live="polite"></span>
+          <p class="share-label" data-i18n="tools.share.label">СОХРАНИ ИЛИ ПОДЕЛИСЬ ОБРАЗОМ</p>
+          <div><button class="share-button" type="button" id="share"><span data-i18n="tools.share">поделиться своим зверем</span> <span aria-hidden="true">↗</span></button></div>
         </section>
+        <div id="floating-feedback" class="floating-feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
       </section>
 
-    </main>
+      <section class="seo-content" aria-labelledby="how-it-works-title">
+        <div class="seo-content__inner">
+          <p class="eyebrow" data-i18n="seo.eyebrow">ИГРА ПРО ЗВЕРЕЙ</p>
+          <h2 id="how-it-works-title" data-i18n="seo.title">Как найти своего зверька?</h2>
+          <p data-i18n="seo.intro">«Кто ты?» — весёлая игра. Напиши имя или любое слово. Игра покажет тебе цветного зверька и добрую мысль на день.</p>
+          <ol>
+            <li data-i18n="seo.step.1">Напиши слово.</li>
+            <li data-i18n="seo.step.2">Посмотри, какой зверёк пришёл к тебе.</li>
+            <li data-i18n="seo.step.3">Нажми кнопку, чтобы сделать картинку со зверьком.</li>
+          </ol>
+          <section aria-labelledby="avatar-title">
+            <h2 id="avatar-title" data-i18n="seo.avatar.title">Сделай картинку со своим зверьком</h2>
+            <p data-i18n="seo.avatar.text">Ниже есть кнопки с картинками. Нажми одну — и можно сделать рисунок со своим зверьком.</p>
+          </section>
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title" data-i18n="faq.title">Частые вопросы</h2>
+            <details><summary data-i18n="faq.1.q">Это игра?</summary><p data-i18n="faq.1.a">Да. Это весёлая игра про зверят.</p></details>
+            <details><summary data-i18n="faq.2.q">Почему у меня такой зверёк?</summary><p data-i18n="faq.2.a">Твоё слово помогает игре выбрать зверька. Попробуй другое слово — может прийти другой.</p></details>
+            <details><summary data-i18n="faq.3.q">Что за слова про день?</summary><p data-i18n="faq.3.a">Это добрая подсказка на сегодня. Она не умеет угадывать будущее.</p></details>
+            <details><summary data-i18n="faq.4.q">Можно сделать картинку?</summary><p data-i18n="faq.4.a">Да. Нажми кнопку с картинкой. Потом покажи своего зверька друзьям.</p></details>
+          </section>
+        </div>
+      </section>
+
+      </main>
+    </div>
     <script defer src="./app.js"></script>
   </body>
 </html>

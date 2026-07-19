@@ -4,13 +4,21 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build:direct": "esbuild src/main.js --bundle --format=iife --target=es2020 --outfile=app.js",
+    "build:direct": "esbuild src/bootstrap.js --bundle --format=iife --target=es2020 --minify --legal-comments=none --outfile=app.js && esbuild src/main.js --bundle --format=iife --target=es2020 --minify --legal-comments=none --outfile=app-core.js",
+    "generate:og": "node scripts/generate-og-image.mjs",
+    "generate:pwa": "node scripts/generate-pwa-assets.mjs",
     "dev": "npm run build:direct && vite --host 0.0.0.0",
-    "build": "npm run build:direct && vite build && cp app.js dist/app.js && cp llms.txt dist/llms.txt",
+    "build": "npm run build:direct && npm run generate:og && npm run generate:pwa && vite build && mkdir -p dist/src && cp -R app.js app-core.js sw.js llms.txt robots.txt sitemap.xml site.webmanifest og-image.png icons dist/ && cp -R src/locales dist/src/",
     "preview": "vite preview",
-    "validate": "npm run build:direct && node scripts/validate-catalog.mjs"
+    "validate": "npm run build:direct && node scripts/validate-bundle.mjs && npm run generate:og && npm run generate:pwa && node scripts/validate-catalog.mjs && node scripts/validate-localized-catalogs.mjs && node scripts/validate-share-preview.mjs && node scripts/validate-seo.mjs && node scripts/validate-i18n.mjs && node scripts/validate-agent-guide.mjs && node scripts/validate-pwa.mjs",
+    "share:dev": "npx wrangler dev",
+    "share:deploy": "npx wrangler deploy"
+  },
+  "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2"
   },
   "devDependencies": {
-    "vite": "^7.0.0"
+    "vite": "^7.0.0",
+    "wrangler": "^4.112.0"
   }
 }
