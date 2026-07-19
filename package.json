@@ -8,7 +8,7 @@
     "generate:og": "node scripts/generate-og-image.mjs",
     "generate:pwa": "node scripts/generate-pwa-assets.mjs",
     "dev": "npm run build:direct && vite --host 0.0.0.0",
-    "build": "npm run build:direct && npm run generate:og && npm run generate:pwa && vite build && mkdir -p dist/src && cp -R app.js app-core.js sw.js llms.txt robots.txt sitemap.xml site.webmanifest og-image.png icons dist/ && cp -R src/locales dist/src/",
+    "build": "npm run build:direct && npm run generate:og && npm run generate:pwa && vite build && mkdir -p dist/src && cp -R app.js app-core.js sw.js llms.txt robots.txt sitemap.xml site.webmanifest og-image.png icons yandex_03b722697fba4e01.html dist/ && cp -R src/locales dist/src/",
     "preview": "vite preview",
     "validate": "npm run build:direct && node scripts/validate-bundle.mjs && npm run generate:og && npm run generate:pwa && node scripts/validate-catalog.mjs && node scripts/validate-localized-catalogs.mjs && node scripts/validate-share-preview.mjs && node scripts/validate-seo.mjs && node scripts/validate-i18n.mjs && node scripts/validate-agent-guide.mjs && node scripts/validate-pwa.mjs",
     "share:dev": "npx wrangler dev",
